@@ -11,20 +11,21 @@ const { Text } = Typography;
 export type TaskCardListProps = {
 	task: TaskModel;
 	project: ProjectModel;
+	onOpenTaskModal: (task:TaskModel) => void;
 };
 
 const TaskCardList = (props: TaskCardListProps) => {
-	const { task, project } = props;
+	const { task, project, onOpenTaskModal } = props;
 	const { styles } = useStyles({ task });
 
-	const onOpenTaskModal = () => {
-		console.log("task = ", task);
+	const onDoubleClick = () => {
+		onOpenTaskModal(task)
 	};
 
 	const taskTags = project.tags?.filter((tag) => task.tags?.includes(tag._id)) ?? [];
 
 	return (
-		<div className={styles.wrapper} onDoubleClick={onOpenTaskModal}>
+		<div className={styles.wrapper} onDoubleClick={onDoubleClick}>
 			<Flex align="center" justify="space-between" className={styles.wrapperTask}>
 				<Flex align="center" gap={10}>
 					<div className={styles.priorityIndicator} />

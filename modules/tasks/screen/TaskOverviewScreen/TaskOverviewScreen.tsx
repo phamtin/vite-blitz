@@ -16,6 +16,7 @@ import useStyles from "./styled";
 import { Red } from "styles/colors";
 import { ACTIVE_STATUSES } from "constants/constants";
 import { groupImportantTask } from "modules/tasks/helper/task.helper";
+import { useTaskStore } from "modules/tasks/store/task.store";
 
 type GroupLabelProps = {
   label: string;
@@ -28,6 +29,8 @@ const TaskOverviewScreen = () => {
   const activeProject = useAppState(
     (state) => state.projects.activeProject as ProjectModel
   );
+  const {viewTask} = useTaskStore();
+
   const [query, setQuery] = useState("");
 
   const useQueryGetTasks = useQuery({
@@ -79,6 +82,7 @@ const TaskOverviewScreen = () => {
         key={task._id}
         task={task}
         project={activeProject as ProjectModel}
+        onOpenTaskModal={viewTask}
       />
     ));
   };

@@ -15,6 +15,7 @@ import FilterModal from "../FilterModal/FilterModal";
 import CreateEditTaskModal from "../CreateEditTaskModal/CreateEditTaskModal";
 import { ProjectHook } from "modules/project/hook/project.hook";
 import useStyles from "./styled";
+import { useTaskStore } from "modules/tasks/store/task.store";
 
 const { Title } = Typography;
 
@@ -29,10 +30,12 @@ const TaskController = (props: TaskControllerProps) => {
 	const { styles } = useStyles();
 	const InputRef = useRef<InputRef>(null);
 
+	const {viewingTask, viewTask} = useTaskStore()
+
 	const participants = ProjectHook.useGetParticipants();
 
 	const [filtered, setFiltered] = useState<boolean>(false);
-	const [isCreate, setIsCreate] = useState<boolean>(false);
+	const [isOpenCreate, setIsOpenCreate] = useState<boolean>(false);
 
 	const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
 		if (e.key === "Enter") {
@@ -49,14 +52,17 @@ const TaskController = (props: TaskControllerProps) => {
 	};
 
 	const onCreate = () => {
-		setIsCreate(true);
+		setIsOpenCreate(true);
 	};
 
 	const onClose = (refetch?: boolean) => {
 		if (refetch) {
 			refetchData();
 		}
-		setIsCreate(false);
+		if (viewingTask) {
+			viewTask(undefined)
+		}
+		setIsOpenCreate(false);
 	};
 
 	return (
@@ -114,7 +120,7 @@ const TaskController = (props: TaskControllerProps) => {
 				/>
 			)}
 
-			{isCreate && <CreateEditTaskModal onClose={onClose} />}
+			{(isOpenCreate || viewingTask ) && <CreateEditTaskModal task={viewingTask} onClose={onClose} />}
 		</div>
 	);
 };

@@ -2,7 +2,6 @@ import { Modal as AntModal, type ModalProps } from "antd";
 import { Neutral } from "styles/colors";
 
 type Props = {
-  hasFooterAction?: boolean;
   children: React.ReactNode;
 };
 

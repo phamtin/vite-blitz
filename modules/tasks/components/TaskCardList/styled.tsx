@@ -1,5 +1,5 @@
 import { createStyles } from "antd-style";
-import { Blue, Neutral, Orange, Red, Yellow } from "styles/colors";
+import { Blue, Neutral, Red, Sky, Yellow } from "styles/colors";
 import type { TaskCardListProps } from "./TaskCardList";
 import { TaskPriority } from "modules/tasks/types/task.types";
 
@@ -34,7 +34,7 @@ const useStyles = createStyles(({ token }, props: Partial<TaskCardListProps>) =>
 		},
 
 		"&:hover": {
-			backgroundColor: Orange[50],
+			backgroundColor: Sky[50],
 		},
 	},
 

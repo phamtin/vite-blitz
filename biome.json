@@ -31,5 +31,17 @@
         "formatter": {
             "quoteStyle": "double"
         }
-    }
+    },
+    "overrides": [
+        {
+            "include": ["**/*.util.*", "**/*.utils.*", "**/*.type.*"],
+            "linter": {
+                "rules": {
+                    "suspicious": {
+                        "noExplicitAny": "off"
+                    }
+                }
+            }
+        }
+    ]
 }
