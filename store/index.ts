@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import type { AppState } from "./store.type";
-import type { SidebarWidth } from "../types/app.type";
 import type { ProjectModel } from "modules/project/types/project.types";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import type { SidebarWidth } from "../types/app.type";
+import type { AppState } from "./store.type";
 
 /**
  *  ------------------------------------------------
@@ -46,6 +46,15 @@ const useAppState = create<AppState>()(
         set((state) => ({
           projects: { ...state.projects, activeProject },
         }));
+      },
+      setCurrentUser: (data: any) => {
+        set((state) => ({
+          auth: {...state.auth, currentLoggedInUser: data}
+        }))
+      },
+      isAuthenticated: () => {
+        const user = get().auth.currentLoggedInUser;
+        return !!user && Object.keys(user).length > 0;
       },
     }),
     {

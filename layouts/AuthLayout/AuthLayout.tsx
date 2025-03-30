@@ -5,7 +5,7 @@ type AuthLayoutProps = {
 };
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  return <div className="wrapper">{children}</div>;
+  return <div className="authlayout-wrapper">{children}</div>;
 };
 
 export default AuthLayout;

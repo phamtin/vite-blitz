@@ -20,6 +20,7 @@ import { Route as IndexImport } from './routes/index'
 
 const HomeLazyImport = createFileRoute('/home')()
 const TasksIndexLazyImport = createFileRoute('/tasks/')()
+const LoginIndexLazyImport = createFileRoute('/login/')()
 const TasksTaskIdLazyImport = createFileRoute('/tasks/$taskId')()
 const ProfileProfileLazyImport = createFileRoute('/profile/profile')()
 
@@ -48,6 +49,12 @@ const TasksIndexLazyRoute = TasksIndexLazyImport.update({
   path: '/tasks/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/tasks/index.lazy').then((d) => d.Route))
+
+const LoginIndexLazyRoute = LoginIndexLazyImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/login/index.lazy').then((d) => d.Route))
 
 const TasksTaskIdLazyRoute = TasksTaskIdLazyImport.update({
   id: '/tasks/$taskId',
@@ -102,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TasksTaskIdLazyImport
       parentRoute: typeof rootRoute
     }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/tasks/': {
       id: '/tasks/'
       path: '/tasks'
@@ -120,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof HomeLazyRoute
   '/profile/profile': typeof ProfileProfileLazyRoute
   '/tasks/$taskId': typeof TasksTaskIdLazyRoute
+  '/login': typeof LoginIndexLazyRoute
   '/tasks': typeof TasksIndexLazyRoute
 }
 
@@ -129,6 +144,7 @@ export interface FileRoutesByTo {
   '/home': typeof HomeLazyRoute
   '/profile/profile': typeof ProfileProfileLazyRoute
   '/tasks/$taskId': typeof TasksTaskIdLazyRoute
+  '/login': typeof LoginIndexLazyRoute
   '/tasks': typeof TasksIndexLazyRoute
 }
 
@@ -139,6 +155,7 @@ export interface FileRoutesById {
   '/home': typeof HomeLazyRoute
   '/profile/profile': typeof ProfileProfileLazyRoute
   '/tasks/$taskId': typeof TasksTaskIdLazyRoute
+  '/login/': typeof LoginIndexLazyRoute
   '/tasks/': typeof TasksIndexLazyRoute
 }
 
@@ -150,9 +167,17 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile/profile'
     | '/tasks/$taskId'
+    | '/login'
     | '/tasks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/main' | '/home' | '/profile/profile' | '/tasks/$taskId' | '/tasks'
+  to:
+    | '/'
+    | '/main'
+    | '/home'
+    | '/profile/profile'
+    | '/tasks/$taskId'
+    | '/login'
+    | '/tasks'
   id:
     | '__root__'
     | '/'
@@ -160,6 +185,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile/profile'
     | '/tasks/$taskId'
+    | '/login/'
     | '/tasks/'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +196,7 @@ export interface RootRouteChildren {
   HomeLazyRoute: typeof HomeLazyRoute
   ProfileProfileLazyRoute: typeof ProfileProfileLazyRoute
   TasksTaskIdLazyRoute: typeof TasksTaskIdLazyRoute
+  LoginIndexLazyRoute: typeof LoginIndexLazyRoute
   TasksIndexLazyRoute: typeof TasksIndexLazyRoute
 }
 
@@ -179,6 +206,7 @@ const rootRouteChildren: RootRouteChildren = {
   HomeLazyRoute: HomeLazyRoute,
   ProfileProfileLazyRoute: ProfileProfileLazyRoute,
   TasksTaskIdLazyRoute: TasksTaskIdLazyRoute,
+  LoginIndexLazyRoute: LoginIndexLazyRoute,
   TasksIndexLazyRoute: TasksIndexLazyRoute,
 }
 
@@ -197,6 +225,7 @@ export const routeTree = rootRoute
         "/home",
         "/profile/profile",
         "/tasks/$taskId",
+        "/login/",
         "/tasks/"
       ]
     },
@@ -214,6 +243,9 @@ export const routeTree = rootRoute
     },
     "/tasks/$taskId": {
       "filePath": "tasks/$taskId.lazy.tsx"
+    },
+    "/login/": {
+      "filePath": "login/index.lazy.tsx"
     },
     "/tasks/": {
       "filePath": "tasks/index.lazy.tsx"

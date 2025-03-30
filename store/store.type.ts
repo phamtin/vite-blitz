@@ -19,6 +19,8 @@ type AppState = {
   changeSidebarWidth: (sidebarWidth: SidebarWidth) => void;
   setProjects: (projects: ProjectModel[]) => void;
   setActiveProject: (id: string) => void;
+  setCurrentUser: (data: any) => void;
+  isAuthenticated: () => boolean;
 };
 
 export type { AppState };

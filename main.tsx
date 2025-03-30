@@ -1,11 +1,12 @@
-import { StrictMode } from "react";
-import ErrorPage from "./layouts/ErrorPage/ErrorPage.tsx";
-import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
 import "@ant-design/v5-patch-for-react-19";
-import "./index.css";
-import { routeTree } from "./routeTree.gen";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import useAppState from "store/index.ts";
 import App from "./App";
+import "./index.css";
+import ErrorPage from "./layouts/ErrorPage/ErrorPage.tsx";
+import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
   routeTree,
@@ -20,12 +21,20 @@ declare module "@tanstack/react-router" {
   }
 }
 
+function RouterWrapper() {
+  const isLogin = useAppState((s) => s.isAuthenticated)();
+  return <RouterProvider
+    router={router}
+    context={{ isLogin }}
+  />;
+}
+
 const rootElement = document.getElementById("root");
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <StrictMode>
       <App>
-        <RouterProvider router={router} />
+        <RouterWrapper />
       </App>
     </StrictMode>
   );

@@ -1,6 +1,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
-import AppLayout from "../layouts/AppLayout/AppLayout";
+import { ProtectedRoute } from "layouts/ProtectedLayout/ProtectedRoute";
 import HomeScreen from "modules/home/screen/HomeScreen/HomeScreen";
+import AppLayout from "../layouts/AppLayout/AppLayout";
 
 export const Route = createLazyFileRoute("/home")({
   component: RouteComponent,
@@ -8,8 +9,10 @@ export const Route = createLazyFileRoute("/home")({
 
 function RouteComponent() {
   return (
-    <AppLayout>
-      <HomeScreen />
-    </AppLayout>
+    <ProtectedRoute>
+      <AppLayout>
+        <HomeScreen />
+      </AppLayout>
+    </ProtectedRoute>
   );
 }
