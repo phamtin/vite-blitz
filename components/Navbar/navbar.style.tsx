@@ -1,5 +1,5 @@
 import { createStyles } from "antd-style";
-import { Neutral, Orange } from "../../styles/colors";
+import { Neutral, Blue } from "../../styles/colors";
 
 const useStyles = createStyles(({ token }) => ({
   wrapper: {
@@ -26,7 +26,7 @@ const useStyles = createStyles(({ token }) => ({
 
         "&.active": {
           color: `${token.colorPrimaryActive}!important`,
-          backgroundColor: Orange[100],
+          backgroundColor: Blue[100],
         },
       },
     },

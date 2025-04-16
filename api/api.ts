@@ -22,6 +22,7 @@ export class AppError extends HTTPError {
 }
 
 const api = ky.extend({
+	// prefixUrl: "http://149.28.151.181:8080",
 	prefixUrl: import.meta.env.VITE_API_URL,
 	timeout: 10000,
 	throwHttpErrors: true,

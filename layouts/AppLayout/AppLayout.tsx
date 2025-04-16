@@ -6,6 +6,7 @@ import { useRouter } from "@tanstack/react-router";
 
 import "./style.css";
 import { useQueryAppData } from "hooks/queryAppData/useQueryAppData";
+import SplashScreen from "modules/splash/screens/SplashScreen/SplashScreen";
 
 const FloatButton = lazy(() => import("antd/es/float-button"));
 
@@ -25,8 +26,8 @@ const AppLayout = ({ children }: PropsWithChildren) => {
 
   const handleQuickAction = () => {};
 
-  if (!isDone) {
-    return <>Do you meditate today?</>;
+  if (!isDone ) {
+    return <SplashScreen />;
   }
 
   return (
