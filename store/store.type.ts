@@ -21,6 +21,8 @@ type AppState = {
   setActiveProject: (id: string) => void;
   setCurrentUser: (data: any) => void;
   isAuthenticated: () => boolean;
+  logout: () => void
 };
 
 export type { AppState };
+

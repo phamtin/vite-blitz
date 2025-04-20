@@ -56,6 +56,15 @@ const useAppState = create<AppState>()(
         const user = get().auth.currentLoggedInUser;
         return !!user && Object.keys(user).length > 0;
       },
+      logout: () => {
+        set(() => (
+          {
+            auth: {
+              currentLoggedInUser: {},
+            },
+          }
+        ))
+      },
     }),
     {
       name: "app",

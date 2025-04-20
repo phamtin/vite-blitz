@@ -1,20 +1,21 @@
-import { useState } from "react";
+import {
+  ArrowUturnLeftIcon,
+  BellIcon,
+  ChatBubbleBottomCenterIcon,
+  Cog6ToothIcon,
+  EllipsisHorizontalCircleIcon,
+} from "@heroicons/react/24/outline";
 import {
   Avatar,
-  Space,
   Button,
   Dropdown,
   Flex,
+  Space,
   Typography,
   type MenuProps,
 } from "antd";
-import {
-  BellIcon,
-  ChatBubbleBottomCenterIcon,
-  EllipsisHorizontalCircleIcon,
-  Cog6ToothIcon,
-  ArrowUturnLeftIcon,
-} from "@heroicons/react/24/outline";
+import { useState } from "react";
+import useAppState from "store";
 
 const items: MenuProps["items"] = [
   {
@@ -110,11 +111,20 @@ const data: MenuProps["items"] = [
 type IconActive = "noti" | "setting" | null;
 
 const NavBarRight = () => {
+  const logout = useAppState(s => s.logout);
   const [iconActive, setIconActive] = useState<IconActive>(null);
 
   const onHandleClickIcon = (icon: IconActive) => {
     setIconActive((prev) => (prev ? (prev !== icon ? icon : null) : icon));
   };
+
+  const handleMenuClick: MenuProps["onClick"] = (info) => {
+    if (info.key === "logout") {
+      logout()
+      window.location.reload()
+    }
+  };
+
 
   return (
     <div className="NavBarRight">
@@ -147,7 +157,7 @@ const NavBarRight = () => {
 
         <Dropdown
           overlayStyle={{ width: 200 }}
-          menu={{ items }}
+          menu={{ items, onClick: handleMenuClick }}
           placement="bottomRight"
           trigger={["click"]}
         >
