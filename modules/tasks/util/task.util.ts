@@ -8,26 +8,24 @@ import type {
 const toFormInitialValues = (task: TaskModel) => {
 	return {
 		_id: task._id,
-		projectId: task.projectId || "",
 		title: task.title,
 		description: task.description,
 		timing: {
-			startDate: dayjs(task.timing.startDate),
-			endDate: dayjs(task.timing.endDate),
+			startDate: task.timing.startDate ? dayjs(task.timing.startDate) : undefined,
+			endDate: task.timing.endDate ? dayjs(task.timing.endDate) : undefined,
 		},
-		assigneeInfo: task.assigneeInfo?.[0]._id || "",
+		assigneeId: task.assigneeInfo?.[0]._id || "",
 		priority: task.priority,
 		status: task.status,
 		subTasks: task.subTasks,
 		additionalInfo: task.additionalInfo,
 		tags: task.tags,
-		createdAt: dayjs(task.createdAt),
 	};
 };
 
-const toCreateTaskRequest = (task: TaskModel): CreateTaskRequest => {
+const toCreateTaskRequest = (task: any, projectId = ""): CreateTaskRequest => {
 	const res = {
-		projectId: task.projectId,
+		projectId,
 		title: task.title,
 		description: task.description,
 		timing: {
@@ -38,7 +36,7 @@ const toCreateTaskRequest = (task: TaskModel): CreateTaskRequest => {
 				? dayjs(task.timing.endDate).endOf("day").toISOString()
 				: undefined,
 		},
-		assigneeId: task.assigneeInfo?.[0]._id || "",
+		assigneeId: task.assigneeInfo?.[0]._id || undefined,
 		priority: task.priority,
 		status: task.status,
 		subTasks: task.subTasks,
@@ -48,7 +46,7 @@ const toCreateTaskRequest = (task: TaskModel): CreateTaskRequest => {
 	return res;
 };
 
-const toUpdateTaskRequest = (task: any): UpdateTaskRequest => {
+const toUpdateTaskRequest = (task: any, _id: string): UpdateTaskRequest => {
 	const res: UpdateTaskRequest = {};
 	if (task.title) {
 		res.title = task.title;

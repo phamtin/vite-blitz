@@ -11,8 +11,6 @@ import {
 	Tag,
 	Button,
 } from "antd";
-import api from "api/api";
-
 import Modal from "components/core/Modal/Modal";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 import type { BaseOptionType } from "antd/es/select";
@@ -27,17 +25,19 @@ import type {
 } from "modules/tasks/types/task.types";
 import { getTaskOptions } from "modules/tasks/helper/task.helper";
 import { DEFAULT_CREATE_TASK } from "modules/tasks/constants/task.constant";
-import { useMutation } from "@tanstack/react-query";
-import useStyles from "./create-edit.styled";
-import useAppState from "store";
+import useStyles from "./styled";
 import {
-	toFormInitialValues,
 	toCreateTaskRequest,
+	toFormInitialValues,
 	toUpdateTaskRequest,
 } from "modules/tasks/util/task.util";
+import TaskApi from "modules/tasks/api/task.api";
+import useAppState from "store";
 
 const { TextArea } = Input;
 const { Text } = Typography;
+
+type FormType = CreateTaskRequest | UpdateTaskRequest;
 
 type Props = {
 	task?: TaskModel;
@@ -45,63 +45,41 @@ type Props = {
 };
 
 const CreateEditTaskModal = (props: Props) => {
-	const { styles } = useStyles();
 	const { task, onClose } = props;
+	const { styles } = useStyles();
 
+	const taskId = task?._id || "";
 	const isEdit = !!task?._id;
 	const title = task ? "Edit Task" : "Create new task";
-
-	const [form] = Form.useForm<TaskModel>();
-
-	const taskMetadata = TaskHook.useGetTaskMetadata({
-		usedForDropdown: true,
-	}) as TaskMetadataForDropdown;
-	const activeProject = useAppState((state) => state.projects.activeProject);
-	const participantList = ProjectHook.useGetParticipants();
-
-	const mutationCreateTask = useMutation({
-		mutationFn: (newTask: CreateTaskRequest) => {
-			return api.post("tasks/create", { json: newTask }).json();
-		},
-		onSuccess: () => onClose(true),
-	});
-
-	const mutationUpdateTask = useMutation({
-		mutationFn: (newTask: UpdateTaskRequest) => {
-			return api.patch(`tasks/${(task as TaskModel)._id}`, { json: newTask }).json();
-		},
-		onSuccess: () => onClose(true),
-	});
-
 	const initialValues = isEdit ? toFormInitialValues(task) : DEFAULT_CREATE_TASK;
+
+	const { mutationCreateTask } = TaskApi.useCreateTask({ onClose });
+	const { mutationUpdateTask } = TaskApi.useUpdateTask({ onClose, taskId });
+
+	const [form] = Form.useForm<CreateTaskRequest>();
+	const participantList = ProjectHook.useGetParticipants();
 
 	const assignees: BaseOptionType[] = participantList.map((item) => ({
 		value: item._id,
 		label: item.profileInfo.fullname,
 	}));
+	const activeProject = useAppState((state) => state.projects.activeProject);
 
-	const onSubmit = (values: TaskModel) => {
-		if (isEdit) {
-			return mutationUpdateTask.mutate(toUpdateTaskRequest(values));
+	const taskMetadata = TaskHook.useGetTaskMetadata({
+		usedForDropdown: true,
+	}) as TaskMetadataForDropdown;
+
+	const onSubmit = (values: FormType) => {
+		if (isEdit && task) {
+			const payload = toUpdateTaskRequest(values, task._id);
+			mutationUpdateTask.mutate(payload);
+			return;
 		}
-		mutationCreateTask.mutate(
-			toCreateTaskRequest({
-				...values,
-				projectId: activeProject?._id || "",
-			}),
-		);
+		const payload = toCreateTaskRequest(values, activeProject?._id);
+		mutationCreateTask.mutate(payload);
 	};
 
-	const onSelectAssignee = (value: string) => {
-		const assigneeInfo = participantList.find((item) => item._id === value);
-		form.setFieldValue("assigneeInfo", assigneeInfo?._id || "");
-	};
-
-	const onCloseModal = () => {
-		onClose(false);
-	};
-
-	type FormType = typeof initialValues;
+	const onCloseModal = () => onClose(false);
 
 	return (
 		<Modal
@@ -216,14 +194,14 @@ const CreateEditTaskModal = (props: Props) => {
 
 						<div className={styles.metaBlock}>
 							<Text strong>Assignee</Text>
-							<Form.Item<FormType> name={["assigneeInfo"]}>
+							<Form.Item<FormType> name="assigneeId">
 								<Select
-									onSelect={onSelectAssignee}
 									placeholder="Assignee"
 									variant="borderless"
-									suffixIcon={null}
 									style={{ width: 180 }}
+									suffixIcon={null}
 									options={assignees}
+									// onSelect={onSelectAssignee}
 								/>
 							</Form.Item>
 						</div>

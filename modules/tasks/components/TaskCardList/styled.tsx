@@ -69,11 +69,13 @@ const useStyles = createStyles(({ token }, props: Partial<TaskCardListProps>) =>
 	infors: {
 		".avatarAssignee": {
 			width: 100,
+			userSelect: "none",
 		},
 		".subTasks": {
 			width: 100,
 			height: 22,
 			marginRight: token.marginLG,
+			userSelect: "none",
 		},
 		".timing": {
 			width: 100,

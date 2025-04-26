@@ -3,11 +3,13 @@ import { ProtectedRoute } from "layouts/ProtectedLayout/ProtectedRoute";
 import ProfileScreen from "modules/account/screen/ProfileScreen/ProfileScreen";
 
 function Profile() {
-  return <ProtectedRoute>
-    <ProfileScreen />;
-  </ProtectedRoute>
+	return (
+		<ProtectedRoute>
+			<ProfileScreen />
+		</ProtectedRoute>
+	);
 }
 
 export const Route = createLazyFileRoute("/profile/profile")({
-  component: Profile,
+	component: Profile,
 });

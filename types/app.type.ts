@@ -25,6 +25,6 @@ export type ToDayjs<T> = T extends Date
 	? Dayjs
 	: T extends any[]
 		? ToDayjs<T[number]>[]
-		: T extends object
+		: T extends Record<string, any>
 			? { [K in keyof T]: ToDayjs<T[K]> }
 			: T;

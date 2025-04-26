@@ -1,8 +1,8 @@
 import ky, {
-  type BeforeErrorHook,
-  HTTPError,
-  type KyResponse,
-  type NormalizedOptions,
+	type BeforeErrorHook,
+	HTTPError,
+	type KyResponse,
+	type NormalizedOptions,
 } from "ky";
 
 export class AppError extends HTTPError {
@@ -33,13 +33,12 @@ const api = ky.extend({
 	},
 	hooks: {
 		beforeRequest: [
-      (request) => {
-        const data = JSON.parse(localStorage.getItem('app') || '{}')
-        if (data?.state?.auth) {
-          const jwt = data.state.auth.currentLoggedInUser.jwt
-          
-          request.headers.set("Authorization", `Bearer ${jwt}`);
-        }
+			(request) => {
+				const data = JSON.parse(localStorage.getItem("app") || "{}");
+				if (data.state?.auth?.currentLoggedInUser?.jwt) {
+					const jwt = data.state.auth.currentLoggedInUser.jwt;
+					request.headers.set("Authorization", `Bearer ${jwt}`);
+				}
 				return request;
 			},
 		],

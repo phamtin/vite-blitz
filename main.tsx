@@ -9,33 +9,37 @@ import ErrorPage from "./layouts/ErrorPage/ErrorPage.tsx";
 import { routeTree } from "./routeTree.gen";
 
 const router = createRouter({
-  routeTree,
-  defaultNotFoundComponent: () => (
-    <ErrorPage code={404} message="Page not found" />
-  ),
+	routeTree,
+	defaultNotFoundComponent: () => <ErrorPage code={404} message="Page not found" />,
+	context: {
+		isLogin: false,
+	},
 });
 
 declare module "@tanstack/react-router" {
-  interface Register {
-    router: typeof router;
-  }
+	interface Register {
+		router: typeof router;
+		context: {
+			isLogin: boolean;
+		};
+	}
 }
 
 function RouterWrapper() {
-  const isLogin = useAppState((s) => s.isAuthenticated)();
-  return <RouterProvider
-    router={router}
-    context={{ isLogin }}
-  />;
+	const isAuthenticated = useAppState((s) => s.isAuthenticated);
+
+	return (
+		<RouterProvider router={router} context={{ isLogin: isAuthenticated?.() }} />
+	);
 }
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(
-    <StrictMode>
-      <App>
-        <RouterWrapper />
-      </App>
-    </StrictMode>
-  );
+	ReactDOM.createRoot(rootElement).render(
+		<StrictMode>
+			<App>
+				<RouterWrapper />
+			</App>
+		</StrictMode>,
+	);
 }
