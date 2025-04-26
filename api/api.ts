@@ -34,10 +34,11 @@ const api = ky.extend({
 	hooks: {
 		beforeRequest: [
 			(request) => {
-				request.headers.set(
-					"authorization",
-					"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOiI2NzgxNTdiMGI4MmIxOTVmMzkzMWY4NjgiLCJleHAiOm51bGx9.QoM8wiS-cSNiKNEOkEQZZWlFIQ1js8ubFTFnj9pkc4Y",
-				);
+				const data = JSON.parse(localStorage.getItem("app") || "{}");
+				if (data.state?.auth?.currentLoggedInUser?.jwt) {
+					const jwt = data.state.auth.currentLoggedInUser.jwt;
+					request.headers.set("Authorization", `Bearer ${jwt}`);
+				}
 				return request;
 			},
 		],

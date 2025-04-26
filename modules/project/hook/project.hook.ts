@@ -2,19 +2,19 @@ import type { Participant } from "modules/account/types/account.types";
 import useAppState from "store/index";
 
 const useGetParticipants = () => {
-  const activeProject = useAppState((state) => state.projects.activeProject);
+	const activeProject = useAppState((state) => state.projects.activeProject);
 
-  if (!activeProject) {
-    return [];
-  }
-  const { participantInfo } = activeProject;
-  let participants: Participant[] = [];
+	if (!activeProject) {
+		return [];
+	}
+	const { participantInfo } = activeProject;
+	let participants: Participant[] = [];
 
-  participants = participants
-    .concat(participantInfo.members)
-    .concat([participantInfo.owner]);
+	participants = participants
+		.concat(participantInfo.members)
+		.concat([participantInfo.owner]);
 
-  return participants;
+	return participants;
 };
 
 const ProjectHook = { useGetParticipants };

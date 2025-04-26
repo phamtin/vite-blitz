@@ -1,5 +1,4 @@
-import React from "react";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import ErrorPage from "../layouts/ErrorPage/ErrorPage.tsx";
 
 // const TanStackRouterDevtools =
@@ -13,16 +12,11 @@ import ErrorPage from "../layouts/ErrorPage/ErrorPage.tsx";
 //         }))
 //       );
 
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      {/* <AppLayout> */}
-      <Outlet />
-      {/* </AppLayout> */}
-      {/* <Suspense>
-        <TanStackRouterDevtools />
-      </Suspense> */}
-    </>
-  ),
-  notFoundComponent: () => <ErrorPage code={404} message="Page not found" />,
+interface RouterContext {
+	isLogin: boolean;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+	component: () => <Outlet />,
+	notFoundComponent: () => <ErrorPage code={404} message="Page not found" />,
 });
