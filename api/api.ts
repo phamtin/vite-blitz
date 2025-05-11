@@ -56,7 +56,7 @@ const api = ky.extend({
 					case 403:
 						throw new AppError(403, r.message, response, request, options);
 					case 500:
-						throw new AppError(403, r.message, response, request, options);
+						throw new AppError(500, r.message, response, request, options);
 					default:
 						break;
 				}

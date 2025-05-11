@@ -2,7 +2,8 @@ import { ConfigProvider, message, type ThemeConfig } from "antd";
 
 import { Green, Red, Blue, Yellow, Sky } from "./styles/colors";
 import type { PropsWithChildren, ReactNode } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { AppError } from "api/api";
 
 const theme: ThemeConfig = {
 	token: {
@@ -27,15 +28,35 @@ const queryClient = (cbNoti: (type: "error", msg: string) => void) => {
 		defaultOptions: {
 			queries: {
 				staleTime: 1 * 60 * 1000, //  1 minute
-				// throwOnError: true,
 			},
 			mutations: {
 				onError(error, variables, context) {
 					cbNoti("error", error.message);
 				},
-				// throwOnError: true,
 			},
 		},
+		queryCache: new QueryCache({
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			onError: (error: any, query) => {
+				const appError: AppError = error;
+
+				switch (appError.status) {
+					case 401:
+					case 403:
+						localStorage.removeItem("app");
+						window.location.replace("/login");
+						return;
+					default:
+						break;
+				}
+
+				// only show error toasts if we already have data in the cache
+				// which indicates a failed background update
+				if (query.state.data !== undefined) {
+					cbNoti("error", error.message);
+				}
+			},
+		}),
 	});
 };
 
