@@ -7,6 +7,7 @@ import App from "./App";
 import "./index.css";
 import ErrorPage from "./layouts/ErrorPage/ErrorPage.tsx";
 import { routeTree } from "./routeTree.gen";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const router = createRouter({
 	routeTree,
@@ -37,9 +38,11 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
 	ReactDOM.createRoot(rootElement).render(
 		<StrictMode>
-			<App>
-				<RouterWrapper />
-			</App>
+			<GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+				<App>
+					<RouterWrapper />
+				</App>
+			</GoogleOAuthProvider>
 		</StrictMode>,
 	);
 }

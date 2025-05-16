@@ -1,6 +1,6 @@
 import { Button, Divider, Flex, Form, Image, Input, Typography } from "antd";
 import useStyles from "./styled";
-import AuthApi from "modules/auth/api/auth.api";
+import GoogleAuthBtn from "modules/auth/components/GoogleAuth/GoogleAuthBtn";
 
 type FieldType = {
 	username?: string;
@@ -9,18 +9,6 @@ type FieldType = {
 
 const SigninScreen = () => {
 	const { styles } = useStyles();
-
-	const { mutationLoginWithGoogle } = AuthApi.useGoogleLogin({});
-
-	const onHandleLoginWithGoogle = () => {
-		mutationLoginWithGoogle.mutate({
-			email: "tinphamtp@gmail.com",
-			username: "Tin Pham",
-			firstname: "Tin",
-			lastname: "Pham",
-			avatar: "",
-		});
-	};
 
 	return (
 		<Flex align="center" justify="center" className={styles.container} gap={50}>
@@ -45,7 +33,11 @@ const SigninScreen = () => {
 							rules={[{ required: true, message: "Please input your username!" }]}
 							style={{ marginBottom: 15 }}
 						>
-							<Input placeholder="E.g., user@example.com" aria-label="Username" />
+							<Input
+								size="large"
+								placeholder="E.g., user@example.com"
+								aria-label="Username"
+							/>
 						</Form.Item>
 
 						<Form.Item<FieldType>
@@ -53,7 +45,7 @@ const SigninScreen = () => {
 							name="password"
 							rules={[{ required: true, message: "Please input your password!" }]}
 						>
-							<Input.Password />
+							<Input.Password size="large" />
 						</Form.Item>
 
 						<Form.Item label={null}>
@@ -70,13 +62,7 @@ const SigninScreen = () => {
 
 						<Divider>or</Divider>
 					</Form>
-					<Button
-						size="large"
-						className={styles.btn}
-						onClick={onHandleLoginWithGoogle}
-					>
-						Sign in with Google
-					</Button>
+					<GoogleAuthBtn />
 				</div>
 			</div>
 

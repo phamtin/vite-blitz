@@ -8,6 +8,8 @@ import {
 	type TableProps,
 	Tooltip,
 	Tag,
+	Collapse,
+	Badge,
 } from "antd";
 import TaskController from "modules/tasks/components/TaskController/TaskController";
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +19,7 @@ import {
 	TaskStatus,
 	type TaskModel,
 	type CreateTaskResponse,
+	type TaskPriority,
 } from "modules/tasks/types/task.types";
 import type { FolderModel } from "modules/folder/types/folder.types";
 import Loading from "components/Loading/Loading";
@@ -25,9 +28,14 @@ import { Neutral, Red } from "styles/colors";
 import { ACTIVE_STATUSES } from "constants/constants";
 import { groupImportantTask } from "modules/tasks/helper/task.helper";
 import { useTaskStore } from "modules/tasks/store/task.store";
-import TaskCollapse from "modules/tasks/components/TaskCollapse/TaskCollapse";
-import { PlusIcon } from "@heroicons/react/16/solid";
-import { LinkIcon } from "@heroicons/react/24/outline";
+import {
+	EllipsisHorizontalIcon,
+	LinkIcon,
+	PlusIcon,
+} from "@heroicons/react/24/outline";
+import { BORDER_COLOR } from "modules/tasks/constants/task.constant";
+
+const { Text } = Typography;
 
 type GroupLabelProps = {
 	label: string;
@@ -78,7 +86,7 @@ const TaskOverviewScreen = () => {
 						length={taskGroups[status].length}
 					/>
 				),
-				children: renderTaskCard(taskGroups[status]),
+				children: renderTaskTable(taskGroups[status]),
 			})) as CollapseProps["items"];
 		},
 	});
@@ -93,7 +101,37 @@ const TaskOverviewScreen = () => {
 			dataIndex: "title",
 			key: "title",
 			width: "30%",
-			render: (text) => <Typography.Text strong>{text}</Typography.Text>,
+			render: (text, record) => (
+				<Flex align="center" gap={6}>
+					<Badge color={BORDER_COLOR[record.priority as TaskPriority]} />
+					<Text strong>{text}</Text>
+				</Flex>
+			),
+		},
+		{
+			title: "Tags",
+			dataIndex: "tags",
+			key: "tags",
+			width: "30%",
+			render: (text: TaskModel["tags"]) => {
+				const taskTags =
+					activeFolder.tags?.filter((tag) => text?.includes(tag._id)) ?? [];
+
+				return (
+					<Flex gap={2}>
+						{!!taskTags.length &&
+							taskTags.map((t) => (
+								<Flex key={t._id}>
+									<Tag color="error" bordered={false}>
+										<Text style={{ color: Red[500], fontWeight: 500, fontSize: 11 }}>
+											{t.name}
+										</Text>
+									</Tag>
+								</Flex>
+							))}
+					</Flex>
+				);
+			},
 		},
 		{
 			title: "Status",
@@ -117,9 +155,7 @@ const TaskOverviewScreen = () => {
 						<Button size="small" type="text">
 							<Flex gap={2}>
 								<LinkIcon width={12} color={Neutral[700]} />
-								<Typography.Text
-									style={{ color: Neutral[600] }}
-								>{`${subTasks.length}`}</Typography.Text>
+								<Text style={{ color: Neutral[600] }}>{`${subTasks.length}`}</Text>
 							</Flex>
 						</Button>
 					</Tooltip>
@@ -127,39 +163,41 @@ const TaskOverviewScreen = () => {
 					"-"
 				),
 		},
+		{
+			title: "Action",
+			key: "action",
+			render: () => (
+				<Button type="text" icon={<EllipsisHorizontalIcon width={20} />} />
+			),
+		},
 	];
 
-	const renderTaskCard = (tasks: TaskModel[]) => {
+	const renderTaskTable = (tasks: TaskModel[]) => {
 		return (
 			<Table<TaskModel>
+				rowKey="_id"
 				size="small"
 				showHeader={false}
 				pagination={{ hideOnSinglePage: true }}
 				columns={columns}
 				dataSource={tasks}
+				onRow={(record) => ({
+					onDoubleClick: () => viewTask(record),
+				})}
 			/>
 		);
 	};
 
-	const GroupLabel = ({ label, length, importants }: GroupLabelProps) => {
-		const { critical, high } = importants;
-		let text = "";
-		if (critical > 0) {
-			text = `${critical} Critical`;
-		} else if (high > 0) {
-			text = `${high} High`;
-		}
+	const GroupLabel = ({ label, length }: GroupLabelProps) => {
 		return (
 			<Flex align="center" justify="space-between">
 				<Flex align="center">
-					<Typography.Text strong style={{ fontSize: 15 }}>
-						{`${label} ${length}`}&nbsp;&nbsp;
-					</Typography.Text>
-					{text && (
-						<Typography.Text strong style={{ color: Red[600], fontSize: 12 }}>
-							{text}
-						</Typography.Text>
-					)}
+					<Flex align="center">
+						<Text strong style={{ fontSize: 15 }}>
+							{`${label}`}&nbsp;&nbsp;
+						</Text>
+						{!!length && <Badge color={Neutral[500]} count={length} />}
+					</Flex>
 				</Flex>
 				<Flex>
 					<Button variant="outlined" shape="circle" icon={<PlusIcon width={16} />} />
@@ -182,7 +220,14 @@ const TaskOverviewScreen = () => {
 
 			<Loading loading={useQueryGetTasks.isLoading} />
 
-			<TaskCollapse tasks={useQueryGetTasks.data} />
+			<div className={styles.taskCollapse}>
+				<Collapse
+					size="small"
+					ghost
+					defaultActiveKey={ACTIVE_STATUSES}
+					items={useQueryGetTasks.data}
+				/>
+			</div>
 		</div>
 	);
 };

@@ -43,7 +43,7 @@ const FolderSwitch = () => {
 	return (
 		<div className={styles.wrapper}>
 			<Select
-				dropdownStyle={{ width: 300 }}
+				styles={{ popup: { root: { width: 300 } } }}
 				size="large"
 				showSearch
 				optionFilterProp="label"

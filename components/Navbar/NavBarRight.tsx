@@ -122,6 +122,8 @@ const NavBarRight = () => {
 		}
 	};
 
+	console.log(currentLoggedInUser?.profileInfo.avatar);
+
 	return (
 		<div className="NavBarRight">
 			<Space align="center" size={8}>
@@ -158,7 +160,12 @@ const NavBarRight = () => {
 					trigger={["click"]}
 				>
 					<Flex align="center" className="avaWrapper">
-						<Avatar shape="circle" size="large" src="https://i.pravatar.cc/50" />
+						<Avatar
+							shape="circle"
+							size="large"
+							alt="avatar"
+							src={currentLoggedInUser?.profileInfo.avatar}
+						/>
 						<Typography.Text strong style={{ margin: "0 10px" }}>
 							{currentLoggedInUser?.profileInfo.username || ""}
 						</Typography.Text>
