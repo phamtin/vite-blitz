@@ -23,9 +23,9 @@ const toFormInitialValues = (task: TaskModel) => {
 	};
 };
 
-const toCreateTaskRequest = (task: any, projectId = ""): CreateTaskRequest => {
+const toCreateTaskRequest = (task: any, folderId = ""): CreateTaskRequest => {
 	const res = {
-		projectId,
+		folderId,
 		title: task.title,
 		description: task.description,
 		timing: {

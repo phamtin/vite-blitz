@@ -160,7 +160,7 @@ const NavBarRight = () => {
 					<Flex align="center" className="avaWrapper">
 						<Avatar shape="circle" size="large" src="https://i.pravatar.cc/50" />
 						<Typography.Text strong style={{ margin: "0 10px" }}>
-							{currentLoggedInUser?.profileInfo.fullname || ""}
+							{currentLoggedInUser?.profileInfo.username || ""}
 						</Typography.Text>
 					</Flex>
 				</Dropdown>

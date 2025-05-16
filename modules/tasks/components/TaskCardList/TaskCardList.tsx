@@ -2,7 +2,7 @@ import { Avatar, Button, Flex, Tag, Tooltip, Typography } from "antd";
 import type { TaskModel } from "modules/tasks/types/task.types";
 import { EllipsisHorizontalIcon, LinkIcon } from "@heroicons/react/24/outline";
 import { Neutral, Red } from "styles/colors";
-import type { ProjectModel } from "modules/project/types/project.types";
+import type { FolderModel } from "modules/folder/types/folder.types";
 import EndTimeDiff from "./DiffTime";
 import useStyles from "./styled";
 
@@ -10,19 +10,19 @@ const { Text } = Typography;
 
 export type TaskCardListProps = {
 	task: TaskModel;
-	project: ProjectModel;
-	onOpenTaskModal: (task:TaskModel) => void;
+	folder: FolderModel;
+	onOpenTaskModal: (task: TaskModel) => void;
 };
 
 const TaskCardList = (props: TaskCardListProps) => {
-	const { task, project, onOpenTaskModal } = props;
+	const { task, folder, onOpenTaskModal } = props;
 	const { styles } = useStyles({ task });
 
 	const onDoubleClick = () => {
-		onOpenTaskModal(task)
+		onOpenTaskModal(task);
 	};
 
-	const taskTags = project.tags?.filter((tag) => task.tags?.includes(tag._id)) ?? [];
+	const taskTags = folder.tags?.filter((tag) => task.tags?.includes(tag._id)) ?? [];
 
 	return (
 		<div className={styles.wrapper} onDoubleClick={onDoubleClick}>
@@ -44,7 +44,7 @@ const TaskCardList = (props: TaskCardListProps) => {
 
 				<Flex align="center" className={styles.infors}>
 					<div className="avatarAssignee">
-						<Tooltip title={task.assigneeInfo?.[0].profileInfo.fullname}>
+						<Tooltip title={task.assigneeInfo?.[0].profileInfo.username}>
 							<Avatar size={24} src={task.assigneeInfo?.[0].profileInfo.avatar} />
 						</Tooltip>
 					</div>

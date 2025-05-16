@@ -14,12 +14,11 @@ const SigninScreen = () => {
 
 	const onHandleLoginWithGoogle = () => {
 		mutationLoginWithGoogle.mutate({
-			email: "tngoc24012@gmail.com",
-			fullname: "Ngoc Tong",
-			firstname: "Ngoc",
-			lastname: "Tong",
-			avatar:
-				"https://lh3.googleusercontent.com/a/ACg8ocJ9HGTDkz4C71NSR3KZyzNxwqa75DiQQsOa_N6OLDLXltXO=s120",
+			email: "tinphamtp@gmail.com",
+			username: "Tin Pham",
+			firstname: "Tin",
+			lastname: "Pham",
+			avatar: "",
 		});
 	};
 

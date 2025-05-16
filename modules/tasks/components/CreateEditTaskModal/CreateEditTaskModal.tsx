@@ -14,7 +14,7 @@ import {
 import Modal from "components/core/Modal/Modal";
 import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 import type { BaseOptionType } from "antd/es/select";
-import { ProjectHook } from "modules/project/hook/project.hook";
+import { FolderHook } from "modules/folder/hook/folder.hook";
 import { Neutral } from "styles/colors";
 import TaskHook from "modules/tasks/hook/task.hook";
 import type {
@@ -57,13 +57,13 @@ const CreateEditTaskModal = (props: Props) => {
 	const { mutationUpdateTask } = TaskApi.useUpdateTask({ onClose, taskId });
 
 	const [form] = Form.useForm<CreateTaskRequest>();
-	const participantList = ProjectHook.useGetParticipants();
+	const participantList = FolderHook.useGetParticipants();
 
 	const assignees: BaseOptionType[] = participantList.map((item) => ({
 		value: item._id,
-		label: item.profileInfo.fullname,
+		label: item.profileInfo.username,
 	}));
-	const activeProject = useAppState((state) => state.projects.activeProject);
+	const activeFolder = useAppState((state) => state.folders.activeFolder);
 
 	const taskMetadata = TaskHook.useGetTaskMetadata({
 		usedForDropdown: true,
@@ -75,7 +75,7 @@ const CreateEditTaskModal = (props: Props) => {
 			mutationUpdateTask.mutate(payload);
 			return;
 		}
-		const payload = toCreateTaskRequest(values, activeProject?._id);
+		const payload = toCreateTaskRequest(values, activeFolder?._id);
 		mutationCreateTask.mutate(payload);
 	};
 

@@ -2,12 +2,12 @@ import type { Participant } from "modules/account/types/account.types";
 import useAppState from "store/index";
 
 const useGetParticipants = () => {
-	const activeProject = useAppState((state) => state.projects.activeProject);
+	const activeFolder = useAppState((state) => state.folders.activeFolder);
 
-	if (!activeProject) {
+	if (!activeFolder) {
 		return [];
 	}
-	const { participantInfo } = activeProject;
+	const { participantInfo } = activeFolder;
 	let participants: Participant[] = [];
 
 	participants = participants
@@ -17,6 +17,6 @@ const useGetParticipants = () => {
 	return participants;
 };
 
-const ProjectHook = { useGetParticipants };
+const FolderHook = { useGetParticipants };
 
-export { ProjectHook };
+export { FolderHook };

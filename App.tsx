@@ -1,6 +1,6 @@
 import { ConfigProvider, message, type ThemeConfig } from "antd";
 
-import { Green, Red, Blue, Yellow, Sky } from "./styles/colors";
+import { Green, Red, Blue, Yellow, Sky, Orange } from "./styles/colors";
 import type { PropsWithChildren, ReactNode } from "react";
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppError } from "api/api";
@@ -8,7 +8,7 @@ import type { AppError } from "api/api";
 const theme: ThemeConfig = {
 	token: {
 		motion: false,
-		colorPrimary: Sky[600],
+		colorPrimary: Orange[500],
 		colorInfo: Blue["500"],
 		colorSuccess: Green["500"],
 		colorWarning: Yellow["500"],

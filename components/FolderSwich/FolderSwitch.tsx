@@ -1,36 +1,36 @@
 import { Flex, Tooltip, Avatar, Typography, Select, Tag } from "antd";
-import useStyles from "./project-switch.styled";
+import useStyles from "./folder-switch.styled";
 import type { BaseOptionType } from "antd/es/select";
 import useAppState from "store/index";
-import type { ProjectModel } from "modules/project/types/project.types";
+import type { FolderModel } from "modules/folder/types/folder.types";
 
 const { Title, Text } = Typography;
 
-const ProjectSwitch = () => {
+const FolderSwitch = () => {
 	const { styles } = useStyles();
 
-	const projectList = useAppState((state) => state.projects.list);
-	const activeProject = useAppState((state) => state.projects.activeProject);
-	const setActiveProject = useAppState((state) => state.setActiveProject);
+	const folderList = useAppState((state) => state.folders.list);
+	const activeFolder = useAppState((state) => state.folders.activeFolder);
+	const setActiveFolder = useAppState((state) => state.setActiveFolder);
 
-	const items: BaseOptionType[] = projectList.map((item) => ({
+	const items: BaseOptionType[] = folderList.map((item) => ({
 		value: item._id,
-		label: item.projectInfo.title,
-		description: item.projectInfo.description,
-		isDefault: item.projectInfo.isDefaultProject,
+		label: item.folderInfo.title,
+		description: item.folderInfo.description,
+		isDefault: item.folderInfo.isDefaultFolder,
 	}));
 
 	const onChange = (value: string) => {
-		setActiveProject(value);
+		setActiveFolder(value);
 		window.location.replace("/home");
 	};
 
-	const renderMemberAvatars = (project: ProjectModel | null) => {
-		if (!project) return [];
+	const renderMemberAvatars = (folder: FolderModel | null) => {
+		if (!folder) return [];
 
-		const owner = project.participantInfo.owner.profileInfo.fullname;
-		const members = project.participantInfo.members.map(
-			(m) => m.profileInfo.fullname,
+		const owner = folder.participantInfo.owner.profileInfo.username;
+		const members = folder.participantInfo.members.map(
+			(m) => m.profileInfo.username,
 		);
 
 		return [owner, ...members].map((m) => (
@@ -49,7 +49,7 @@ const ProjectSwitch = () => {
 				optionFilterProp="label"
 				onChange={onChange}
 				options={items}
-				defaultValue={activeProject?._id}
+				defaultValue={activeFolder?._id}
 				optionRender={(option) => (
 					<Flex justify="space-between" align="center">
 						<div>
@@ -74,11 +74,11 @@ const ProjectSwitch = () => {
 						style: { color: "#f56a00", backgroundColor: "#fde3cf" },
 					}}
 				>
-					{renderMemberAvatars(activeProject)}
+					{renderMemberAvatars(activeFolder)}
 				</Avatar.Group>
 			</div>
 		</div>
 	);
 };
 
-export default ProjectSwitch;
+export default FolderSwitch;

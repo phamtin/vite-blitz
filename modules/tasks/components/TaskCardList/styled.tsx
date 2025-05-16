@@ -16,22 +16,8 @@ const useStyles = createStyles(({ token }, props: Partial<TaskCardListProps>) =>
 		position: "relative",
 		padding: 6,
 		paddingLeft: 4,
-		borderBottom: `1px solid ${Neutral[200]}`,
-		borderLeft: `1px solid ${Neutral[200]}`,
-		borderRight: `1px solid ${Neutral[200]}`,
 		backgroundColor: "white",
 		overflow: "hidden",
-
-		"&:first-child": {
-			borderTop: `1px solid ${Neutral[200]}`,
-			borderTopLeftRadius: token.borderRadiusLG,
-			borderTopRightRadius: token.borderRadiusLG,
-		},
-
-		"&:last-child": {
-			borderBottomLeftRadius: token.borderRadiusLG,
-			borderBottomRightRadius: token.borderRadiusLG,
-		},
 
 		"&:hover": {
 			backgroundColor: Sky[50],

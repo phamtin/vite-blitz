@@ -8,7 +8,7 @@ import type { ToDayjs } from "types/app.type";
 
 const DEFAULT_CREATE_TASK: ToDayjs<CreateTaskRequest> = {
 	title: "",
-	projectId: "",
+	folderId: "",
 	timing: {},
 	subTasks: [],
 	status: TaskStatus.NotStartYet,

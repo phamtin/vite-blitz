@@ -45,7 +45,7 @@ export type TaskModel = {
 
 	title: string;
 	status: TaskStatus;
-	projectId: string;
+	folderId: string;
 	description?: string;
 	priority?: TaskPriority;
 	assigneeInfo?: Omit<AccountModel, "accountSettings">[];
@@ -100,7 +100,7 @@ export type TaskMetadata =
 
 export type CreateTaskRequest = {
 	title: string;
-	projectId: string;
+	folderId: string;
 	description?: string;
 	status?: TaskStatus;
 	assigneeId?: string;

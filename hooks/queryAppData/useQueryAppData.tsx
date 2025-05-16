@@ -1,28 +1,28 @@
 import useAppState from "store/index";
-import type { ProjectModel } from "modules/project/types/project.types";
-import { useGetMyProjects } from "modules/project/api/project.api";
+import type { FolderModel } from "modules/folder/types/folder.types";
+import { useGetMyFolders } from "modules/folder/api/folder.api";
 
 const useQueryAppData = (enabled?: boolean) => {
 	const {
-		data: projects = [],
+		data: folders = [],
 		isSuccess,
-		isLoading: isLoadingProjects,
-	} = useGetMyProjects<ProjectModel[]>({ enabled });
+		isLoading: isLoadingFolders,
+	} = useGetMyFolders<FolderModel[]>({ enabled });
 
-	const activeProject = useAppState((state) => state.projects.activeProject);
-	const setProjectList = useAppState((state) => state.setProjects);
-	const setActiveProject = useAppState((state) => state.setActiveProject);
+	const activeFolder = useAppState((state) => state.folders.activeFolder);
+	const setFolderList = useAppState((state) => state.setFolders);
+	const setActiveFolder = useAppState((state) => state.setActiveFolder);
 
-	if (isSuccess && !projects.length) {
-		throw new Error("Active Project not found");
+	if (isSuccess && !folders.length) {
+		throw new Error("Active Folder not found");
 	}
 
-	if (isSuccess && projects.length > 0) {
-		setProjectList(projects);
-		setActiveProject(activeProject?._id ?? projects[0]._id);
+	if (isSuccess && folders.length > 0) {
+		setFolderList(folders);
+		setActiveFolder(activeFolder?._id ?? folders[0]._id);
 	}
 
-	const isDone = !isLoadingProjects && projects.length > 0;
+	const isDone = !isLoadingFolders && folders.length > 0;
 
 	return { isDone };
 };

@@ -1,12 +1,12 @@
 import { Flex } from "antd";
-import ProjectSwitch from "components/ProjectSwich/ProjectSwitch";
+import FolderSwitch from "components/FolderSwich/FolderSwitch";
 
 const NavBararLeft = () => {
-  return (
-    <Flex align="center" gap={8}>
-      <ProjectSwitch />
-    </Flex>
-  );
+	return (
+		<Flex align="center" gap={8}>
+			<FolderSwitch />
+		</Flex>
+	);
 };
 
 export default NavBararLeft;

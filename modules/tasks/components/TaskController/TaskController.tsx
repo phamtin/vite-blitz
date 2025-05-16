@@ -8,12 +8,13 @@ import {
 	Typography,
 	Input,
 	type InputRef,
+	Tooltip,
 } from "antd";
 import { PlusIcon, FunnelIcon } from "@heroicons/react/24/outline";
 
 import FilterModal from "../FilterModal/FilterModal";
 import CreateEditTaskModal from "../CreateEditTaskModal/CreateEditTaskModal";
-import { ProjectHook } from "modules/project/hook/project.hook";
+import { FolderHook } from "modules/folder/hook/folder.hook";
 import useStyles from "./styled";
 import { useTaskStore } from "modules/tasks/store/task.store";
 
@@ -30,9 +31,9 @@ const TaskController = (props: TaskControllerProps) => {
 	const { styles } = useStyles();
 	const InputRef = useRef<InputRef>(null);
 
-	const {viewingTask, viewTask} = useTaskStore()
+	const { viewingTask, viewTask } = useTaskStore();
 
-	const participants = ProjectHook.useGetParticipants();
+	const participants = FolderHook.useGetParticipants();
 
 	const [filtered, setFiltered] = useState<boolean>(false);
 	const [isOpenCreate, setIsOpenCreate] = useState<boolean>(false);
@@ -60,7 +61,7 @@ const TaskController = (props: TaskControllerProps) => {
 			refetchData();
 		}
 		if (viewingTask) {
-			viewTask(undefined)
+			viewTask(undefined);
 		}
 		setIsOpenCreate(false);
 	};
@@ -73,10 +74,11 @@ const TaskController = (props: TaskControllerProps) => {
 					<Button type="link" color="primary" onClick={toggleFilter}>
 						Reset filters?
 					</Button>
-					<Button onClick={toggleFilter}>
-						<FunnelIcon width={18} />
-						Filters
-					</Button>
+					<Tooltip title="Task filters">
+						<Button onClick={toggleFilter}>
+							<FunnelIcon width={18} />
+						</Button>
+					</Tooltip>
 					<Button type="primary" onClick={onCreate}>
 						<PlusIcon width={18} /> New task
 					</Button>
@@ -120,7 +122,9 @@ const TaskController = (props: TaskControllerProps) => {
 				/>
 			)}
 
-			{(isOpenCreate || viewingTask ) && <CreateEditTaskModal task={viewingTask} onClose={onClose} />}
+			{(isOpenCreate || viewingTask) && (
+				<CreateEditTaskModal task={viewingTask} onClose={onClose} />
+			)}
 		</div>
 	);
 };

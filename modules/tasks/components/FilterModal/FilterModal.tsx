@@ -21,7 +21,7 @@ const FilterModal = (props: FilterModalProps) => {
 	const [filters, setFilters] = useState<Record<string, Date | string[]>>({});
 
 	const assignees = participants.map((p) => ({
-		label: p.profileInfo.fullname,
+		label: p.profileInfo.username,
 		value: p._id,
 	}));
 

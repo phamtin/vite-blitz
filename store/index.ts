@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { mutative } from "zustand-mutative";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { ProjectModel } from "modules/project/types/project.types";
+import type { FolderModel } from "modules/folder/types/folder.types";
 import type { SidebarWidth } from "../types/app.type";
 import type { AppState, LoggedInUser } from "./store.type";
 import type { AccountModel } from "modules/account/types/account.types";
@@ -21,9 +21,9 @@ const useAppState = create<AppState>()(
 			ui: {
 				sidebarWidth: "220px",
 			},
-			projects: {
+			folders: {
 				list: [],
-				activeProject: null,
+				activeFolder: null,
 			},
 			settings: {
 				theme: "light",
@@ -38,18 +38,18 @@ const useAppState = create<AppState>()(
 				const jwt = (get().auth.currentLoggedInUser as LoggedInUser)?.jwt;
 				return !!jwt;
 			},
-			setProjects: (projects: ProjectModel[] = []) => {
+			setFolders: (folders: FolderModel[] = []) => {
 				set((state) => {
-					state.projects.list = projects;
+					state.folders.list = folders;
 				});
 			},
-			setActiveProject: (id: string) => {
-				const activeProject = get().projects.list.find((p) => p._id === id);
-				if (!activeProject) {
-					throw new Error("Project not found");
+			setActiveFolder: (id: string) => {
+				const activeFolder = get().folders.list.find((p) => p._id === id);
+				if (!activeFolder) {
+					throw new Error("Folder not found");
 				}
 				set((state) => {
-					state.projects.activeProject = activeProject;
+					state.folders.activeFolder = activeFolder;
 				});
 			},
 			changeSidebarWidth: (sidebarWidth: SidebarWidth) => {

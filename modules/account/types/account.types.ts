@@ -1,27 +1,27 @@
 export enum SigninMethod {
-  Google = "Google",
-  Telegram = "Telegram",
+	Google = "Google",
+	Telegram = "Telegram",
 }
 
 export enum Theme {
-  Light = "Light",
-  Dark = "Dark",
+	Light = "Light",
+	Dark = "Dark",
 }
 
 export type ProfileInfo = {
-  email: string;
-  fullname: string;
-  firstname: string;
-  lastname: string;
-  phoneNumber: string[];
-  locale: string;
-  avatar: string;
-  isPrivateAccount: boolean;
-  birthday?: Date;
+	email: string;
+	username: string;
+	firstname: string;
+	lastname: string;
+	phoneNumber: string;
+	locale: string;
+	avatar: string;
+	isPrivateAccount: boolean;
+	birthday?: Date;
 };
 
 export type AccountSettings = {
-  theme: Theme;
+	theme: Theme;
 };
 
 /**
@@ -32,17 +32,18 @@ export type AccountSettings = {
  * =============================
  */
 export type AccountModel = {
-  _id: string;
+	_id: string;
 
-  profileInfo: ProfileInfo;
-  signinMethod: SigninMethod;
-  accountSettings: AccountSettings;
+	signinMethod: SigninMethod;
+	profileInfo: ProfileInfo;
+	accountSettings: AccountSettings;
+	signupAt: Date;
 
-  createdAt: Date;
-  updatedAt?: Date;
-  createdBy?: string;
-  deletedAt?: Date;
-  deletedBy?: string;
+	createdAt: Date;
+	updatedAt?: Date;
+	createdBy?: string;
+	deletedAt?: Date;
+	deletedBy?: string;
 };
 
 export type PublicAccountModel = Omit<AccountModel, "accountSettings">;
