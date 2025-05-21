@@ -21,6 +21,8 @@ import type {
 	CreateTaskRequest,
 	TaskMetadataForDropdown,
 	TaskModel,
+	TaskPriority,
+	TaskStatus,
 	UpdateTaskRequest,
 } from "modules/tasks/types/task.types";
 import { getTaskOptions } from "modules/tasks/helper/task.helper";
@@ -33,6 +35,8 @@ import {
 } from "modules/tasks/util/task.util";
 import TaskApi from "modules/tasks/api/task.api";
 import useAppState from "store";
+import dayjs from "dayjs";
+import TaskStatusSelector from "../TaskStatusSelector";
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -41,6 +45,11 @@ type FormType = CreateTaskRequest | UpdateTaskRequest;
 
 type Props = {
 	task?: TaskModel;
+	predefinedField?: {
+		status?: TaskStatus;
+		priority?: TaskPriority;
+		assigneeId?: string;
+	};
 	onClose: (refetch: boolean) => void;
 };
 
@@ -50,24 +59,30 @@ const CreateEditTaskModal = (props: Props) => {
 
 	const taskId = task?._id || "";
 	const isEdit = !!task?._id;
-	const title = task ? "Edit Task" : "Create new task";
-	const initialValues = isEdit ? toFormInitialValues(task) : DEFAULT_CREATE_TASK;
+	const title = taskId ? "Edit Task" : "Create new task";
+
+	const initialValues = isEdit
+		? toFormInitialValues(task)
+		: {
+				...DEFAULT_CREATE_TASK,
+				...props.predefinedField,
+			};
 
 	const { mutationCreateTask } = TaskApi.useCreateTask({ onClose });
 	const { mutationUpdateTask } = TaskApi.useUpdateTask({ onClose, taskId });
 
 	const [form] = Form.useForm<CreateTaskRequest>();
+
 	const participantList = FolderHook.useGetParticipants();
+	const activeFolder = useAppState((state) => state.folders.activeFolder);
+	const taskMetadata = TaskHook.useGetTaskMetadata({
+		usedForDropdown: true,
+	}) as TaskMetadataForDropdown;
 
 	const assignees: BaseOptionType[] = participantList.map((item) => ({
 		value: item._id,
 		label: item.profileInfo.username,
 	}));
-	const activeFolder = useAppState((state) => state.folders.activeFolder);
-
-	const taskMetadata = TaskHook.useGetTaskMetadata({
-		usedForDropdown: true,
-	}) as TaskMetadataForDropdown;
 
 	const onSubmit = (values: FormType) => {
 		if (isEdit && task) {
@@ -77,6 +92,10 @@ const CreateEditTaskModal = (props: Props) => {
 		}
 		const payload = toCreateTaskRequest(values, activeFolder?._id);
 		mutationCreateTask.mutate(payload);
+	};
+
+	const onStatusChange = (value: TaskStatus) => {
+		form.setFieldValue("status", value);
 	};
 
 	const onCloseModal = () => onClose(false);
@@ -107,7 +126,6 @@ const CreateEditTaskModal = (props: Props) => {
 			}}
 			okText={isEdit ? "Update" : "Create"}
 			onCancel={onCloseModal}
-			onClose={onCloseModal}
 			modalRender={(dom) => (
 				<Form
 					name="create_edit_task"
@@ -169,12 +187,9 @@ const CreateEditTaskModal = (props: Props) => {
 						<div className={styles.metaBlock}>
 							<Text strong>Status</Text>
 							<Form.Item<FormType> name="status">
-								<Select
-									variant="borderless"
-									suffixIcon={null}
-									style={{ width: 140 }}
-									placeholder="Status"
-									options={taskMetadata.status}
+								<TaskStatusSelector
+									value={initialValues.status}
+									onChange={onStatusChange}
 								/>
 							</Form.Item>
 						</div>
@@ -186,7 +201,7 @@ const CreateEditTaskModal = (props: Props) => {
 									variant="borderless"
 									suffixIcon={null}
 									placeholder="Priority"
-									style={{ width: 140 }}
+									style={{ width: 131 }}
 									options={taskMetadata.priorities}
 								/>
 							</Form.Item>
@@ -198,10 +213,9 @@ const CreateEditTaskModal = (props: Props) => {
 								<Select
 									placeholder="Assignee"
 									variant="borderless"
-									style={{ width: 180 }}
+									style={{ width: 131 }}
 									suffixIcon={null}
 									options={assignees}
-									// onSelect={onSelectAssignee}
 								/>
 							</Form.Item>
 						</div>
@@ -217,6 +231,15 @@ const CreateEditTaskModal = (props: Props) => {
 							<Form.Item<FormType> name={["timing", "endDate"]}>
 								<DatePicker variant="borderless" placeholder="Due at" />
 							</Form.Item>
+						</div>
+						<div className={styles.metaBlock}>
+							<Text strong>Created At</Text>
+							<Text>
+								{task?.createdAt
+									? dayjs(task?.createdAt).format("YYYY-MM-DD HH:mm")
+									: "Now"}
+								&nbsp;
+							</Text>
 						</div>
 					</div>
 				</Col>

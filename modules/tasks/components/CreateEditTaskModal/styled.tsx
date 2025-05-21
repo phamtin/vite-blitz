@@ -5,9 +5,6 @@ const useStyles = createStyles(({ token }) => ({
   wrapper: {
     width: "100%",
   },
-  createTaskWrapper: {
-    padding: 0,
-  },
 
   titleInput: {
     fontWeight: 600,
@@ -17,20 +14,26 @@ const useStyles = createStyles(({ token }) => ({
   },
 
   mainData: {
-    padding: token.paddingLG,
-    paddingTop: token.paddingSM,
+    padding: token.padding,
+    paddingTop: token.paddingXXS,
   },
 
   metaData: {
-    height: "100%",
-    backgroundColor: Neutral[50],
+    marginTop: token.margin,
+    border: `1px solid ${Neutral[200]}`,
+    padding: `${token.paddingXXS}px ${token.paddingXS}px`,
+    marginRight: token.margin,
+    borderRadius: token.borderRadiusLG,
   },
 
   metaBlock: {
     display: "flex",
-    flexDirection: "column",
-    padding: token.padding,
-    borderBottom: `1px solid ${Neutral[200]}`,
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: token.paddingXS,
+    ":not(:last-child)": {
+      borderBottom: `1px dashed ${Neutral[200]}`,
+    },
   },
 
   options: {

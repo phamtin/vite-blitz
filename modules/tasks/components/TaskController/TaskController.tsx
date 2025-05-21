@@ -31,7 +31,7 @@ const TaskController = (props: TaskControllerProps) => {
 	const { styles } = useStyles();
 	const InputRef = useRef<InputRef>(null);
 
-	const { viewingTask, viewTask } = useTaskStore();
+	const { viewingTask, predefinedField, viewTask } = useTaskStore();
 
 	const participants = FolderHook.useGetParticipants();
 
@@ -60,9 +60,8 @@ const TaskController = (props: TaskControllerProps) => {
 		if (refetch) {
 			refetchData();
 		}
-		if (viewingTask) {
-			viewTask(undefined);
-		}
+		viewTask(undefined, {});
+
 		setIsOpenCreate(false);
 	};
 
@@ -123,7 +122,11 @@ const TaskController = (props: TaskControllerProps) => {
 			)}
 
 			{(isOpenCreate || viewingTask) && (
-				<CreateEditTaskModal task={viewingTask} onClose={onClose} />
+				<CreateEditTaskModal
+					task={viewingTask}
+					predefinedField={predefinedField}
+					onClose={onClose}
+				/>
 			)}
 		</div>
 	);

@@ -1,13 +1,17 @@
 import { ConfigProvider, message, type ThemeConfig } from "antd";
 
-import { Green, Red, Blue, Yellow, Sky, Orange } from "./styles/colors";
+import { Green, Red, Blue, Yellow, Orange } from "./styles/colors";
 import type { PropsWithChildren, ReactNode } from "react";
-import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type { AppError } from "api/api";
+import {
+	MutationCache,
+	QueryCache,
+	QueryClient,
+	QueryClientProvider,
+} from "@tanstack/react-query";
+import { handleReactQueryError } from "utils/response";
 
 const theme: ThemeConfig = {
 	token: {
-		motion: false,
 		colorPrimary: Orange[500],
 		colorInfo: Blue["500"],
 		colorSuccess: Green["500"],
@@ -38,23 +42,12 @@ const queryClient = (cbNoti: (type: "error", msg: string) => void) => {
 		queryCache: new QueryCache({
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			onError: (error: any, query) => {
-				const appError: AppError = error;
-
-				switch (appError.status) {
-					case 401:
-					case 403:
-						localStorage.removeItem("app");
-						window.location.replace("/login");
-						return;
-					default:
-						break;
-				}
-
-				// only show error toasts if we already have data in the cache
-				// which indicates a failed background update
-				if (query.state.data !== undefined) {
-					cbNoti("error", error.message);
-				}
+				handleReactQueryError(query, error, cbNoti);
+			},
+		}),
+		mutationCache: new MutationCache({
+			onError: (error, variables, context, mutation) => {
+				handleReactQueryError(mutation, error, cbNoti);
 			},
 		}),
 	});

@@ -1,4 +1,4 @@
-import type { Key, MouseEventHandler, ReactNode } from "react";
+import type { Key, ReactNode } from "react";
 import { Badge, Button, Flex, Menu, type MenuProps, Typography } from "antd";
 import {
 	ChartPieIcon,
@@ -14,7 +14,6 @@ import type { MenuItemType } from "antd/es/menu/interface";
 import useStyles from "./sidebar.style";
 import { useQueryClient } from "@tanstack/react-query";
 import useAppState from "store";
-import type { CreateTaskResponse } from "modules/tasks/types/task.types";
 import api from "api/api";
 import type { FolderModel } from "modules/folder/types/folder.types";
 

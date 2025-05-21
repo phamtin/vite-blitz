@@ -17,7 +17,7 @@ const EndTimeDiff = ({ task }: { task: TaskModel }) => {
 
 	const diff = dayjs(task.timing.endDate).diff(dayjs(), "d");
 
-	const text = diff > 0 ? `${diff} Days left` : "Dued";
+	const text = diff > 0 ? `${diff <= 1 ? "1 Day" : `${diff} Days`} left` : "Dued";
 
 	const icon =
 		diff > 0 ? (

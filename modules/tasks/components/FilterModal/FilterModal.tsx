@@ -82,7 +82,6 @@ const FilterModal = (props: FilterModalProps) => {
 			onOk={onSubmit}
 			maskClosable={false}
 			onCancel={onClose}
-			onClose={onClose}
 		>
 			<Row>
 				<Col xs={6}>
@@ -94,7 +93,6 @@ const FilterModal = (props: FilterModalProps) => {
 						className={styles.filterSelector}
 						mode="multiple"
 						showSearch={false}
-						prefix={<Tag>Assignee</Tag>}
 						onChange={handleAssigneeChange}
 						options={assignees}
 					/>
@@ -111,7 +109,6 @@ const FilterModal = (props: FilterModalProps) => {
 						className={styles.filterSelector}
 						mode="multiple"
 						showSearch={false}
-						prefix={<Tag>Priority</Tag>}
 						onChange={handlePriorityChange}
 						options={taskPriority}
 					/>
@@ -128,7 +125,6 @@ const FilterModal = (props: FilterModalProps) => {
 						className={styles.filterSelector}
 						mode="multiple"
 						showSearch={false}
-						prefix={<Tag>Status</Tag>}
 						onChange={handleStatusChange}
 						options={taskStatus}
 					/>

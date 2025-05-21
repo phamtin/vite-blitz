@@ -1,28 +1,28 @@
 import useAppState from "store/index";
-import type { FolderModel } from "modules/folder/types/folder.types";
 import { useGetMyFolders } from "modules/folder/api/folder.api";
+import type { GetMyFoldersResponse } from "./type";
 
 const useQueryAppData = (enabled?: boolean) => {
 	const {
-		data: folders = [],
+		data = [],
 		isSuccess,
 		isLoading: isLoadingFolders,
-	} = useGetMyFolders<FolderModel[]>({ enabled });
+	} = useGetMyFolders<GetMyFoldersResponse[]>({ enabled });
 
 	const activeFolder = useAppState((state) => state.folders.activeFolder);
 	const setFolderList = useAppState((state) => state.setFolders);
 	const setActiveFolder = useAppState((state) => state.setActiveFolder);
 
-	if (isSuccess && !folders.length) {
+	if (isSuccess && !data.length) {
 		throw new Error("Active Folder not found");
 	}
 
-	if (isSuccess && folders.length > 0) {
-		setFolderList(folders);
-		setActiveFolder(activeFolder?._id ?? folders[0]._id);
+	if (isSuccess && data.length > 0) {
+		setFolderList(data.map((f) => f.folder));
+		setActiveFolder(activeFolder?._id ?? data[0].folder._id);
 	}
 
-	const isDone = !isLoadingFolders && folders.length > 0;
+	const isDone = !isLoadingFolders && data.length > 0;
 
 	return { isDone };
 };

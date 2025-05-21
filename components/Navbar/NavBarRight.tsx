@@ -122,8 +122,6 @@ const NavBarRight = () => {
 		}
 	};
 
-	console.log(currentLoggedInUser?.profileInfo.avatar);
-
 	return (
 		<div className="NavBarRight">
 			<Space align="center" size={8}>
@@ -163,7 +161,7 @@ const NavBarRight = () => {
 						<Avatar
 							shape="circle"
 							size="large"
-							alt="avatar"
+							alt="user-avatar"
 							src={currentLoggedInUser?.profileInfo.avatar}
 						/>
 						<Typography.Text strong style={{ margin: "0 10px" }}>

@@ -4,7 +4,6 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import type { FolderModel } from "modules/folder/types/folder.types";
 import type { SidebarWidth } from "../types/app.type";
 import type { AppState, LoggedInUser } from "./store.type";
-import type { AccountModel } from "modules/account/types/account.types";
 
 /**
  *  ------------------------------------------------
