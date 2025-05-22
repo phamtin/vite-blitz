@@ -16,4 +16,6 @@ const useGetMyFolders = <TData, TError = Error>(
 	});
 };
 
-export { useGetMyFolders };
+const FolderApi = { useGetMyFolders };
+
+export default FolderApi;

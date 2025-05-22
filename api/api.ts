@@ -39,6 +39,8 @@ const api = ky.extend({
 					const jwt = data.state.auth.currentLoggedInUser.jwt;
 					request.headers.set("Authorization", `Bearer ${jwt}`);
 				}
+				request.headers.set("X-Client-Type", "web-app");
+
 				return request;
 			},
 		],

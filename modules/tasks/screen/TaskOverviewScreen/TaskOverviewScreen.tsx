@@ -20,7 +20,7 @@ import {
 import { useTaskStore } from "modules/tasks/store/task.store";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Orange } from "styles/colors";
-import StatusDot from "modules/tasks/components/TaskStatusSelector/StatusDot";
+import StatusDot from "components/TaskStatusSelector/StatusDot";
 import TaskApi from "modules/tasks/api/task.api";
 
 const { Text } = Typography;

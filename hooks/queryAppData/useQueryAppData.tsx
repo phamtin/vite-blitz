@@ -1,13 +1,13 @@
 import useAppState from "store/index";
-import { useGetMyFolders } from "modules/folder/api/folder.api";
 import type { GetMyFoldersResponse } from "./type";
+import FolderApi from "modules/folder/api/folder.api";
 
 const useQueryAppData = (enabled?: boolean) => {
 	const {
 		data = [],
 		isSuccess,
 		isLoading: isLoadingFolders,
-	} = useGetMyFolders<GetMyFoldersResponse[]>({ enabled });
+	} = FolderApi.useGetMyFolders<GetMyFoldersResponse[]>({ enabled });
 
 	const activeFolder = useAppState((state) => state.folders.activeFolder);
 	const setFolderList = useAppState((state) => state.setFolders);

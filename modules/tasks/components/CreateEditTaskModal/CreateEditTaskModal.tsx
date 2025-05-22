@@ -36,10 +36,15 @@ import {
 import TaskApi from "modules/tasks/api/task.api";
 import useAppState from "store";
 import dayjs from "dayjs";
-import TaskStatusSelector from "../TaskStatusSelector";
+import TaskStatusSelector from "components/TaskStatusSelector";
+import TaskPrioritySelector from "components/TaskPrioritySelector/TaskPrioritySelector";
 
 const { TextArea } = Input;
 const { Text } = Typography;
+
+const HeaderMetadata = ({ title }: { title: string }) => {
+	return <Text style={{ fontWeight: 500, color: Neutral[600] }}>{title}</Text>;
+};
 
 type FormType = CreateTaskRequest | UpdateTaskRequest;
 
@@ -96,6 +101,10 @@ const CreateEditTaskModal = (props: Props) => {
 
 	const onStatusChange = (value: TaskStatus) => {
 		form.setFieldValue("status", value);
+	};
+
+	const onPriorityChange = (value: TaskPriority) => {
+		form.setFieldValue("priority", value);
 	};
 
 	const onCloseModal = () => onClose(false);
@@ -185,61 +194,95 @@ const CreateEditTaskModal = (props: Props) => {
 				<Col md={7}>
 					<div className={styles.metaData}>
 						<div className={styles.metaBlock}>
-							<Text strong>Status</Text>
-							<Form.Item<FormType> name="status">
-								<TaskStatusSelector
-									value={initialValues.status}
-									onChange={onStatusChange}
-								/>
-							</Form.Item>
+							<Row align="middle">
+								<Col xs={10}>
+									<HeaderMetadata title="Status" />
+								</Col>
+								<Col xs={14}>
+									<Form.Item<FormType> name="status">
+										<TaskStatusSelector
+											value={initialValues.status}
+											onChange={onStatusChange}
+										/>
+									</Form.Item>
+								</Col>
+							</Row>
 						</div>
 
 						<div className={styles.metaBlock}>
-							<Text strong>Priority</Text>
-							<Form.Item<FormType> name="priority">
-								<Select
-									variant="borderless"
-									suffixIcon={null}
-									placeholder="Priority"
-									style={{ width: 131 }}
-									options={taskMetadata.priorities}
-								/>
-							</Form.Item>
+							<Row align="middle">
+								<Col xs={10}>
+									<HeaderMetadata title="Priority" />
+								</Col>
+								<Col xs={14}>
+									<Form.Item<FormType> name="priority">
+										<TaskPrioritySelector
+											value={initialValues.priority}
+											onChange={onPriorityChange}
+										/>
+									</Form.Item>
+								</Col>
+							</Row>
 						</div>
 
 						<div className={styles.metaBlock}>
-							<Text strong>Assignee</Text>
-							<Form.Item<FormType> name="assigneeId">
-								<Select
-									placeholder="Assignee"
-									variant="borderless"
-									style={{ width: 131 }}
-									suffixIcon={null}
-									options={assignees}
-								/>
-							</Form.Item>
+							<Row align="middle">
+								<Col xs={10}>
+									<HeaderMetadata title="Assignee" />
+								</Col>
+								<Col xs={14}>
+									<Form.Item<FormType> name="assigneeId">
+										<Select
+											placeholder="Assignee"
+											variant="borderless"
+											style={{ width: 131 }}
+											suffixIcon={null}
+											options={assignees}
+										/>
+									</Form.Item>
+								</Col>
+							</Row>
 						</div>
 
 						<div className={styles.metaBlock}>
-							<Text strong>Start Date</Text>
-							<Form.Item<FormType> name={["timing", "startDate"]}>
-								<DatePicker variant="borderless" placeholder="Start from" />
-							</Form.Item>
+							<Row align="middle">
+								<Col xs={10}>
+									<HeaderMetadata title="Start date" />
+								</Col>
+								<Col xs={14}>
+									<Form.Item<FormType> name={["timing", "startDate"]}>
+										<DatePicker variant="borderless" placeholder="Start from" />
+									</Form.Item>
+								</Col>
+							</Row>
+						</div>
+
+						<div className={styles.metaBlock}>
+							<Row align="middle">
+								<Col xs={10}>
+									<HeaderMetadata title="Due Date" />
+								</Col>
+								<Col xs={14}>
+									<Form.Item<FormType> name={["timing", "endDate"]}>
+										<DatePicker variant="borderless" placeholder="Due at" />
+									</Form.Item>
+								</Col>
+							</Row>
 						</div>
 						<div className={styles.metaBlock}>
-							<Text strong>Due Date</Text>
-							<Form.Item<FormType> name={["timing", "endDate"]}>
-								<DatePicker variant="borderless" placeholder="Due at" />
-							</Form.Item>
-						</div>
-						<div className={styles.metaBlock}>
-							<Text strong>Created At</Text>
-							<Text>
-								{task?.createdAt
-									? dayjs(task?.createdAt).format("YYYY-MM-DD HH:mm")
-									: "Now"}
-								&nbsp;
-							</Text>
+							<Row align="middle">
+								<Col xs={10}>
+									<HeaderMetadata title="Created At" />
+								</Col>
+								<Col xs={14}>
+									<Text>
+										{task?.createdAt
+											? dayjs(task?.createdAt).format("YYYY-MM-DD HH:mm")
+											: "Now"}
+										&nbsp;
+									</Text>
+								</Col>
+							</Row>
 						</div>
 					</div>
 				</Col>

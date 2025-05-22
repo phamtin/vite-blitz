@@ -25,6 +25,7 @@ export default defineConfig({
 			styles: path.resolve(__dirname, "./styles"),
 			types: path.resolve(__dirname, "./types"),
 			utils: path.resolve(__dirname, "./utils"),
+			icons: path.resolve(__dirname, "./icons"),
 		},
 	},
 	build: {
