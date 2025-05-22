@@ -1,7 +1,8 @@
+import type { AccountModel } from "modules/account/types/account.types";
+import type { FolderModel } from "modules/folder/types/folder.types";
 import { create } from "zustand";
 import { mutative } from "zustand-mutative";
 import { createJSONStorage, persist } from "zustand/middleware";
-import type { FolderModel } from "modules/folder/types/folder.types";
 import type { SidebarWidth } from "../types/app.type";
 import type { AppState, LoggedInUser } from "./store.type";
 
@@ -28,9 +29,19 @@ const useAppState = create<AppState>()(
 				theme: "light",
 			},
 
-			setCurrentUser: (data: LoggedInUser | undefined) => {
-				set((state) => {
-					state.auth.currentLoggedInUser = data;
+			setCurrentUser: (data: LoggedInUser | undefined | AccountModel) => {
+        set((state) => {
+          if (data && 'jwt' in data) {
+            state.auth.currentLoggedInUser = data;
+          } else {
+            const oldUser = state.auth.currentLoggedInUser;
+            if (oldUser && 'jwt' in oldUser) {
+              state.auth.currentLoggedInUser = {
+                ...oldUser,
+                ...data,
+              }
+            };
+          }
 				});
 			},
 			isAuthenticated: () => {
