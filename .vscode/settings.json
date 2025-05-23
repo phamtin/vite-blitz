@@ -1,5 +1,7 @@
 {
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.tabSize": 2,
+  "editor.indentSize": 2,
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
@@ -7,5 +9,4 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "editor.formatOnSave": true,
-  "prettier.enable": false
 }
