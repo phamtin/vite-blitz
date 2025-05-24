@@ -49,3 +49,10 @@ export type AccountModel = {
 export type PublicAccountModel = Omit<AccountModel, "accountSettings">;
 
 export type Participant = PublicAccountModel & { isOwner?: boolean };
+
+export type UpdateProfileRequest = {
+  profileInfo:  Pick<ProfileInfo, 'firstname' | 'lastname' | 'phoneNumber' | 'username'>
+}
+export type UpdateProfileInitialValues = Partial<
+  Pick<ProfileInfo, 'firstname' | 'lastname' | 'phoneNumber' | 'username'>
+>;
