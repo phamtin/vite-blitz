@@ -1,3 +1,4 @@
+import { useDebounceFn } from 'ahooks';
 import { Avatar, Button, Flex, Form, Input } from 'antd';
 import ProfileApi from 'modules/account/api/profile.api';
 import { UpdateProfileInitialValues } from 'modules/account/types/account.types';
@@ -45,21 +46,24 @@ const ProfileDetails = () => {
     return false;
   };
 
-  const onValuesChange = () => {
-    onCheckValidFields()
+  const { run: debouncedOnValuesChange } = useDebounceFn(() => {
+    onCheckValidFields();
     setIsValueChanged(checkIsChanged());
-  };
+  }, { wait: 500 });
+
 
   const onCheckValidFields = async () => {
-    try {
-      await form.validateFields();
-      setHasError(false);
-    } catch (errorInfo: any) {
-      if (errorInfo.errorFields.length > 0) {
-        setHasError(true)
-      } else {
-        setHasError(false)
-      }
+    const errList = form.getFieldsError();
+    const isError = errList.some(field => field.errors.length > 0);
+    setHasError(isError);
+  }
+
+
+  const checkKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const isNumber = e.key >= '0' && e.key <= '9';
+    const isBackspaceOrDelete = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(e.key);
+    if (!isNumber && !isBackspaceOrDelete) {
+      e.preventDefault();
     }
   }
 
@@ -72,7 +76,7 @@ const ProfileDetails = () => {
       form={form}
       initialValues={initialValues}
       className={styles.wrapper}
-      onValuesChange={onValuesChange}
+      onValuesChange={debouncedOnValuesChange}
     >
       <Form.Item label="Avatar">
         <Flex vertical gap="small">
@@ -113,13 +117,7 @@ const ProfileDetails = () => {
         <Input
           placeholder="Enter your phone number"
           maxLength={10}
-          onKeyDown={(e) => {
-            const isNumber = /^[0-9]$/.test(e.key);
-            const isBackspaceOrDelete = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(e.key);
-            if (!isNumber && !isBackspaceOrDelete) {
-              e.preventDefault();
-            }
-          }}
+          onKeyDown={checkKeyDown}
         />
       </Form.Item>
       <Form.Item className={styles.btnForm}>
