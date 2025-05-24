@@ -17,7 +17,10 @@ const useStyles = createStyles(({ token }) => ({
 
 			".btn-dot": {
 				opacity: 0,
+				backgroundColor: "transparenet",
+				color: token.colorTextDescription,
 				position: "absolute",
+				border: 0,
 				right: 4,
 				top: 6,
 			},

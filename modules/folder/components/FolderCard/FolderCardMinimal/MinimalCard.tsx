@@ -37,10 +37,10 @@ const MinimalCard = (props: MinimalCardProps) => {
 				<Meta
 					title={<Paragraph ellipsis={{ rows: 3 }}>{folderInfo.title}</Paragraph>}
 				/>
-				<Dropdown placement="top" menu={{ items }} trigger={["click"]}>
+				<Dropdown placement="topLeft" menu={{ items }} trigger={["click"]}>
 					<Button
 						ghost
-						type="text"
+						color="primary"
 						shape="circle"
 						icon={<EllipsisVerticalIcon width={16} />}
 						className="btn-dot"
