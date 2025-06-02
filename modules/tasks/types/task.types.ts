@@ -1,11 +1,11 @@
-import type { AccountModel } from "../../account/types/account.types";
-import type { AttributePattern } from "../../../types/app.type";
 import type { DefaultOptionType } from "antd/es/select";
+import type { AttributePattern } from "../../../types/app.type";
+import type { AccountModel } from "../../account/types/account.types";
 
 export type TaskTiming = {
-	startDate?: Date;
-	endDate?: Date;
-	estimation?: string;
+	startDate?: Date | null;
+	endDate?: Date | null;
+	estimation?: number | null; //	Default is HOUR
 };
 
 export enum TaskPriority {
@@ -66,11 +66,7 @@ export type ExtendTaskModel = {
 	availableTags?: { _id: string; name: string; color: string }[];
 };
 
-export type SubTask = Pick<
-	TaskModel,
-	"_id" | "title" | "description" | "priority" | "additionalInfo"
-> & { status?: TaskStatus };
-
+export type SubTask = Pick<TaskModel, "_id" | "title"> & { status?: TaskStatus };
 /**
  *  -----------------------------
  *	|
