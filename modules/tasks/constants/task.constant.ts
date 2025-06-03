@@ -1,10 +1,41 @@
 import {
 	type CreateTaskRequest,
+	type TaskModel,
 	TaskPriority,
 	TaskStatus,
 } from "../types/task.types";
 import type { ToDayjs } from "types/app.type";
 import { Blue, Gray, Green, Lime, Orange, Red, Sky, Yellow } from "styles/colors";
+
+const TASK_FIELDS = {
+	Overview: [
+		"title",
+		"folderId",
+		"timing",
+		"priority",
+		"status",
+		"tags",
+		"subTasks",
+		"createdAt",
+	] satisfies (keyof TaskModel)[],
+	Detail: [
+		"title",
+		"status",
+		"folderId",
+		"description",
+		"timing",
+		"assigneeInfo",
+		"additionalInfo",
+		"priority",
+		"subTasks",
+		"tags",
+		"updatedAt",
+		"createdAt",
+		"createdBy",
+		"deletedAt",
+		"deletedBy",
+	] satisfies (keyof TaskModel)[],
+};
 
 const DEFAULT_CREATE_TASK: ToDayjs<CreateTaskRequest> = {
 	title: "",
@@ -55,6 +86,7 @@ const PRIORITY_COLOR_MAP = {
 };
 
 export {
+	TASK_FIELDS,
 	DEFAULT_CREATE_TASK,
 	BORDER_COLOR,
 	BORDER_COLOR_PRESET,

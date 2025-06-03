@@ -1,15 +1,15 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { ProtectedRoute } from "layouts/ProtectedLayout/ProtectedRoute";
-import TaskDetailScreen from "modules/tasks/screen/TaskDetailScreen/TaskDetailScreen";
+import FolderDetailScreen from "modules/folder/screens/FolderDetailScreen/FolderDetailScreen";
 
-export const Route = createLazyFileRoute("/tasks/$taskId")({
+export const Route = createLazyFileRoute("/folders/$folderId")({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
 	return (
 		<ProtectedRoute>
-			<TaskDetailScreen taskId="123" />
+			<FolderDetailScreen folderId="123" />
 		</ProtectedRoute>
 	);
 }

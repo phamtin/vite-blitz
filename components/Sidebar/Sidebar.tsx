@@ -1,4 +1,5 @@
 import type { Key, ReactNode } from "react";
+import queryString from "query-string";
 import { Badge, Button, Flex, Menu, type MenuProps, Typography } from "antd";
 import {
 	ChartPieIcon,
@@ -7,6 +8,7 @@ import {
 	DocumentCheckIcon,
 	ChevronDoubleLeftIcon,
 	HashtagIcon,
+	FolderIcon,
 } from "@heroicons/react/24/outline";
 import type { SidebarWidth } from "types/app.type";
 import { useNavigate, useRouter } from "@tanstack/react-router";
@@ -16,6 +18,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import useAppState from "store";
 import api from "api/api";
 import type { FolderModel } from "modules/folder/types/folder.types";
+import { TASK_FIELDS } from "modules/tasks/constants/task.constant";
 
 const getItem = (
 	label: ReactNode,
@@ -38,6 +41,16 @@ const items = (onmouseenterCb: any): MenuItemType[] => {
 			<ChartPieIcon width={18} style={{ marginLeft: -3 }} />,
 		),
 		getItem(
+			"Folders",
+			"/folders",
+			<FolderIcon width={18} style={{ marginLeft: -3 }} />,
+		),
+		getItem(
+			"Meetings",
+			"/meetings",
+			<PresentationChartBarIcon width={18} style={{ marginLeft: -3 }} />,
+		),
+		getItem(
 			"Tasks",
 			"/tasks",
 			<DocumentCheckIcon width={18} style={{ marginLeft: -3 }} />,
@@ -45,12 +58,6 @@ const items = (onmouseenterCb: any): MenuItemType[] => {
 			undefined,
 			onmouseenterCb,
 		),
-		getItem(
-			"Meetings",
-			"/meetings",
-			<PresentationChartBarIcon width={18} style={{ marginLeft: -3 }} />,
-		),
-
 		getItem(
 			"Statistics",
 			"sub1",
@@ -62,7 +69,6 @@ const items = (onmouseenterCb: any): MenuItemType[] => {
 				getItem("Option 8", "8", <Badge color="blue" />),
 			],
 		),
-
 		getItem(
 			"SEO management",
 			"sub2",
@@ -70,7 +76,6 @@ const items = (onmouseenterCb: any): MenuItemType[] => {
 			[
 				getItem("Option 9", "9", <Badge color="green" />),
 				getItem("Option 10", "10", <Badge color="lime" />),
-
 				getItem("Submenu", "sub3", null, [
 					getItem("Option 11", "11"),
 					getItem("Option 12", "12"),
@@ -78,18 +83,6 @@ const items = (onmouseenterCb: any): MenuItemType[] => {
 			],
 		),
 	];
-};
-
-const getActivekey = (path: string) => {
-	const keys: Record<string, string> = {
-		"/home": "/home",
-		"/tasks": "/tasks",
-		"/meetings/": "/meetings",
-	};
-	if (path.startsWith(keys[path])) {
-		return keys[path];
-	}
-	return "";
 };
 
 interface SidebarProps {
@@ -122,12 +115,17 @@ const Sidebar = ({ width, setWidth }: SidebarProps) => {
 	};
 
 	const onMouseEnter = () => {
-		//  todo: should not use this hack
+		const folderIds = [activeFolder._id, activeFolder._id];
+		const paramObject: Record<string, string | string[]> = {};
+		paramObject.folderIds = folderIds;
+		paramObject.select = TASK_FIELDS.Overview;
+
 		queryClient.prefetchQuery({
-			queryKey: ["getTasks", activeFolder._id, ""],
-			queryFn: () => {
-				return api.get(`tasks?folderId=${activeFolder._id}&query=`).json();
-			},
+			queryKey: [
+				"useGetTasks",
+				{ query: "", folderIds, fields: paramObject.select },
+			],
+			queryFn: () => api.get(`tasks?${queryString.stringify(paramObject)}`).json(),
 		});
 	};
 

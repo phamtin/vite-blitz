@@ -163,9 +163,9 @@ const getTaskTableColumns = (
 		),
 	},
 	{
-		title: "Tags",
-		key: "tags",
-		dataIndex: "tags",
+		title: "Sub-tasks",
+		key: "subTasks",
+		dataIndex: "subTasks",
 		render: (_, { subTasks }) =>
 			subTasks?.length ? (
 				<Tooltip title={`This ticket has ${subTasks.length} sub-tasks`}>

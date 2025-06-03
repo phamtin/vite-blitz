@@ -1,14 +1,13 @@
 import { ConfigProvider, message, type ThemeConfig } from "antd";
-
 import { Green, Red, Blue, Yellow, Orange } from "./styles/colors";
-import type { PropsWithChildren, ReactNode } from "react";
+import { lazy, Suspense, type PropsWithChildren, type ReactNode } from "react";
+import { handleReactQueryError } from "utils/response";
 import {
 	MutationCache,
 	QueryCache,
 	QueryClient,
 	QueryClientProvider,
 } from "@tanstack/react-query";
-import { handleReactQueryError } from "utils/response";
 
 const theme: ThemeConfig = {
 	token: {
@@ -26,6 +25,14 @@ const theme: ThemeConfig = {
 		},
 	},
 };
+
+const ReactQueryDevtools =
+	process.env.NODE_ENV === "development" &&
+	lazy(() =>
+		import("@tanstack/react-query-devtools/build/modern/production.js").then(
+			(d) => ({ default: d.ReactQueryDevtools }),
+		),
+	);
 
 const queryClient = (cbNoti: (type: "error", msg: string) => void) => {
 	return new QueryClient({
@@ -63,8 +70,15 @@ const App = ({ children }: PropsWithChildren) => {
 	return (
 		<ConfigProvider theme={theme}>
 			{contextHolder}
+
 			<QueryClientProvider client={queryClient(openNotificationWithIcon)}>
 				{children}
+
+				{process.env.NODE_ENV === "development" && (
+					<Suspense fallback={null}>
+						{ReactQueryDevtools && <ReactQueryDevtools initialIsOpen={false} />}
+					</Suspense>
+				)}
 			</QueryClientProvider>
 		</ConfigProvider>
 	);
