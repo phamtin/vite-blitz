@@ -13,10 +13,6 @@ const useGetMyNotification = <TData>() => {
 	});
 };
 
-export enum InviteRequestType {
-	ACCEPT = "accept",
-	REJECT = "reject",
-}
 export type InviteResponseRequest = {
 	type: string;
 	folderId: string;
@@ -32,6 +28,7 @@ const useInviteResponse = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["useGetMyNotification"] });
+			queryClient.invalidateQueries({ queryKey: ["useGetMyFolders"] });
 		},
 	});
 

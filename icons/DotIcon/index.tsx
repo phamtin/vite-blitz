@@ -1,13 +1,13 @@
 import { Red } from "styles/colors"
 
-const DotRedIcon = () => {
+const DotIcon = ({ color }: { color: string }) => {
   return (
     <svg
       aria-hidden="true"
       width="10"
       height="10"
       viewBox="0 0 8 8"
-      fill={Red[400]}
+      fill={color}
       xmlns="http://www.w3.org/2000/svg"
       style={{ marginTop: 5 }}
     >
@@ -16,4 +16,4 @@ const DotRedIcon = () => {
   )
 }
 
-export default DotRedIcon
+export default DotIcon

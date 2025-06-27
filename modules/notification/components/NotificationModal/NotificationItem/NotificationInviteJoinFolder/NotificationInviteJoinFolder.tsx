@@ -10,9 +10,11 @@ import {
   message
 } from 'antd';
 import dayjs from 'dayjs';
-import DotRedIcon from 'icons/DotRedIcon';
-import NotificationApi, { InviteRequestType } from 'modules/notification/api/notification.api';
+import DotIcon from 'icons/DotIcon';
+import NotificationApi from 'modules/notification/api/notification.api';
+import { InviteRequestType } from 'modules/notification/constants/notification.constant';
 import { InviteJoinFolderPayloadStatus, type NotificationInviteJoinFolder } from 'modules/notification/types/notification.types';
+import { Red } from 'styles/colors';
 import useStyles from '../../notification.style';
 const { Text } = Typography;
 
@@ -25,7 +27,6 @@ type NotificationInviteJoinFolderItemProps = {
 const NotificationInviteJoinFolderItem = ({ item, closeNotiModal, handleMarkAsRead }: NotificationInviteJoinFolderItemProps) => {
   const { styles } = useStyles()
   const { mutationInviteResponse } = NotificationApi.useInviteResponse()
-  const queryClient = useQueryClient();
   const navigate = useNavigate()
 
   const handleInviteResponse = (type: InviteRequestType, item: NotificationInviteJoinFolder) => {
@@ -35,7 +36,6 @@ const NotificationInviteJoinFolderItem = ({ item, closeNotiModal, handleMarkAsRe
       email: item.payload.inviteeEmail,
     }, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["useGetMyFolders"] });
         if (type === InviteRequestType.ACCEPT) {
           message.success({
             content: (
@@ -101,7 +101,7 @@ const NotificationInviteJoinFolderItem = ({ item, closeNotiModal, handleMarkAsRe
       </Flex>
       <Flex vertical gap={10} align='end'>
         {!item.read && (
-          <DotRedIcon />
+          <DotIcon color={Red[400]} />
         )}
         <span>{dayjs(`${item.createdAt}`).fromNow()}</span>
       </Flex>

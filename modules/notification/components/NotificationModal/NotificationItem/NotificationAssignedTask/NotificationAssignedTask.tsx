@@ -4,9 +4,10 @@ import {
   Typography
 } from 'antd';
 import dayjs from 'dayjs';
-import DotRedIcon from 'icons/DotRedIcon';
+import DotIcon from 'icons/DotIcon';
 import type { NotificationAssignedTaskForYou } from 'modules/notification/types/notification.types';
-import { truncateText } from 'modules/notification/utils/notification.utils';
+import { Red } from 'styles/colors';
+import { truncateText } from 'utils/truncateText';
 import useStyles from '../../notification.style';
 const { Text } = Typography;
 type NotificationAssignedTaskItemProps = {
@@ -27,7 +28,7 @@ const NotificationAssignedTaskItem = ({ item, handleMarkAsRead }: NotificationAs
       </Flex>
       <Flex vertical gap={10} align='end'>
         {!item.read && (
-          <DotRedIcon />
+          <DotIcon color={Red[400]} />
         )}
         <span>{dayjs(`${item.createdAt}`).fromNow()}</span>
       </Flex>
