@@ -1,6 +1,5 @@
 import {
   ArrowUturnLeftIcon,
-  BellIcon,
   ChatBubbleBottomCenterIcon,
   Cog6ToothIcon,
   EllipsisHorizontalCircleIcon
@@ -10,11 +9,12 @@ import {
   Button,
   Dropdown,
   Flex,
+  type MenuProps,
   Space,
   Typography,
-  type MenuProps,
 } from "antd";
 import ProfileSettings from "modules/account/screen/ProfileSettings/ProfileSettings";
+import NotificationModal from "modules/notification/components/NotificationModal/NotificationModal";
 import { useState } from "react";
 import useAppState from "store";
 
@@ -65,46 +65,6 @@ const items: MenuProps["items"] = [
   },
 ];
 
-const data: MenuProps["items"] = [
-  {
-    key: "data0_0",
-    label: (
-      <Flex vertical>
-        <Typography.Title level={5}>Notification</Typography.Title>
-      </Flex>
-    ),
-  },
-  {
-    key: "data0",
-    label: (
-      <Flex vertical>
-        <Typography.Title level={5}>Tín Phạm</Typography.Title>
-        <Typography.Text>Racing car sprays burning fuel into crowd.</Typography.Text>
-      </Flex>
-    ),
-  },
-  {
-    key: "data1",
-    label: (
-      <Flex vertical>
-        <Typography.Title level={5}>Tín Phạm</Typography.Title>
-        <Typography.Text>
-          Australian walks 100km after outback crash.
-        </Typography.Text>
-      </Flex>
-    ),
-  },
-  {
-    key: "data2",
-    label: (
-      <Flex vertical>
-        <Typography.Title level={5}>Tín Phạm</Typography.Title>
-        <Typography.Text>Man charged over missing wedding girl.</Typography.Text>
-      </Flex>
-    ),
-  },
-];
-
 type IconActive = "noti" | "setting" | null;
 
 const NavBarRight = () => {
@@ -127,23 +87,10 @@ const NavBarRight = () => {
 
   return (
     <div className="NavBarRight">
-      <Space align="center" size={8}>
-        <Dropdown
-          overlayStyle={{ width: 400 }}
-          menu={{ items: data }}
-          placement="bottom"
-          arrow={{ pointAtCenter: true }}
-          trigger={["click"]}
-          onOpenChange={() => onHandleClickIcon("noti")}
-        >
-          <Button
-            shape="circle"
-            size="large"
-            type="text"
-            className={`optionButton ${iconActive === "noti" && "active"}`}
-            icon={<BellIcon width={20} />}
-          />
-        </Dropdown>
+      <Space align="center" size={14}>
+        <NotificationModal iconActive={iconActive}
+          setIconActive={setIconActive}
+          onHandleClickIcon={onHandleClickIcon} />
         <Button
           shape="circle"
           size="large"
@@ -187,7 +134,6 @@ const NavBarRight = () => {
       </Space>
 
       <ProfileSettings isModalOpen={isModalOpen} handleCancel={handleUpdateProfileCancel} />
-
     </div >
   )
 };
