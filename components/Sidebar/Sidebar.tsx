@@ -1,31 +1,31 @@
-import type { Key, ReactNode } from "react";
-import queryString from "query-string";
-import { Badge, Button, Flex, Menu, type MenuProps, Typography } from "antd";
 import {
-	ChartPieIcon,
-	PresentationChartBarIcon,
 	ChartBarIcon,
-	DocumentCheckIcon,
+	ChartPieIcon,
 	ChevronDoubleLeftIcon,
-	HashtagIcon,
+	DocumentCheckIcon,
 	FolderIcon,
-} from "@heroicons/react/24/outline";
-import type { SidebarWidth } from "types/app.type";
-import { useNavigate, useRouter } from "@tanstack/react-router";
-import type { MenuItemType } from "antd/es/menu/interface";
-import useStyles from "./sidebar.style";
-import { useQueryClient } from "@tanstack/react-query";
-import useAppState from "store";
-import api from "api/api";
-import type { FolderModel } from "modules/folder/types/folder.types";
-import { TASK_FIELDS } from "modules/tasks/constants/task.constant";
+	HashtagIcon,
+	PresentationChartBarIcon,
+} from '@heroicons/react/24/outline';
+import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useRouter } from '@tanstack/react-router';
+import { Badge, Button, Flex, Menu, type MenuProps, Typography } from 'antd';
+import type { MenuItemType } from 'antd/es/menu/interface';
+import api from 'api/api';
+import type { FolderModel } from 'modules/folder/types/folder.types';
+import { TASK_FIELDS } from 'modules/tasks/constants/task.constant';
+import queryString from 'query-string';
+import type { Key, ReactNode } from 'react';
+import useAppState from 'store';
+import type { SidebarWidth } from 'types/app.type';
+import useStyles from './sidebar.style';
 
 const getItem = (
 	label: ReactNode,
 	key: Key,
 	icon?: ReactNode,
 	children?: MenuItemType[],
-	type?: "group",
+	type?: 'group',
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	onMouseEnter?: any,
 ): MenuItemType => {
@@ -36,49 +36,49 @@ const getItem = (
 const items = (onmouseenterCb: any): MenuItemType[] => {
 	return [
 		getItem(
-			"Dashboard",
-			"/home",
+			'Dashboard',
+			'/home',
 			<ChartPieIcon width={18} style={{ marginLeft: -3 }} />,
 		),
 		getItem(
-			"Folders",
-			"/folders",
+			'Folders',
+			'/folders',
 			<FolderIcon width={18} style={{ marginLeft: -3 }} />,
 		),
 		getItem(
-			"Meetings",
-			"/meetings",
+			'Meetings',
+			'/meetings',
 			<PresentationChartBarIcon width={18} style={{ marginLeft: -3 }} />,
 		),
 		getItem(
-			"Tasks",
-			"/tasks",
+			'Tasks',
+			'/tasks',
 			<DocumentCheckIcon width={18} style={{ marginLeft: -3 }} />,
 			undefined,
 			undefined,
 			onmouseenterCb,
 		),
 		getItem(
-			"Statistics",
-			"sub1",
+			'Statistics',
+			'sub1',
 			<ChartBarIcon width={18} style={{ marginLeft: -3 }} />,
 			[
-				getItem("Option 5", "5", <Badge color="yellow" />),
-				getItem("Option 6", "6", <Badge color="orange" />),
-				getItem("Option 7", "7", <Badge color="cyan" />),
-				getItem("Option 8", "8", <Badge color="blue" />),
+				getItem('Option 5', '5', <Badge color="yellow" />),
+				getItem('Option 6', '6', <Badge color="orange" />),
+				getItem('Option 7', '7', <Badge color="cyan" />),
+				getItem('Option 8', '8', <Badge color="blue" />),
 			],
 		),
 		getItem(
-			"SEO management",
-			"sub2",
+			'SEO management',
+			'sub2',
 			<HashtagIcon width={18} style={{ marginLeft: -3 }} />,
 			[
-				getItem("Option 9", "9", <Badge color="green" />),
-				getItem("Option 10", "10", <Badge color="lime" />),
-				getItem("Submenu", "sub3", null, [
-					getItem("Option 11", "11"),
-					getItem("Option 12", "12"),
+				getItem('Option 9', '9', <Badge color="green" />),
+				getItem('Option 10', '10', <Badge color="lime" />),
+				getItem('Submenu', 'sub3', null, [
+					getItem('Option 11', '11'),
+					getItem('Option 12', '12'),
 				]),
 			],
 		),
@@ -99,31 +99,31 @@ const Sidebar = ({ width, setWidth }: SidebarProps) => {
 		(state) => state.folders.activeFolder,
 	) as FolderModel;
 
-	const isExpanded = width === "220px";
+	const isExpanded = width === '220px';
 
-	const goToHome = () => {};
+	const goToHome = () => { };
 
 	const onToggleSizebar = () => {
 		if (isExpanded) {
-			return setWidth("54px");
+			return setWidth('54px');
 		}
-		return setWidth("220px");
+		return setWidth('220px');
 	};
 
-	const onClick: MenuProps["onClick"] = (e) => {
+	const onClick: MenuProps['onClick'] = (e) => {
 		navigate({ to: e.key });
 	};
 
 	const onMouseEnter = () => {
-		const folderIds = [activeFolder._id, activeFolder._id];
+		const folderIds = [activeFolder._id];
 		const paramObject: Record<string, string | string[]> = {};
 		paramObject.folderIds = folderIds;
 		paramObject.select = TASK_FIELDS.Overview;
 
 		queryClient.prefetchQuery({
 			queryKey: [
-				"useGetTasks",
-				{ query: "", folderIds, fields: paramObject.select },
+				'useGetTasks',
+				{ query: '', folderIds, fields: paramObject.select },
 			],
 			queryFn: () => api.get(`tasks?${queryString.stringify(paramObject)}`).json(),
 		});
@@ -145,14 +145,14 @@ const Sidebar = ({ width, setWidth }: SidebarProps) => {
 				<Menu
 					style={{
 						width,
-						height: "100% ",
+						height: '100% ',
 						paddingTop: theme.paddingXS,
 						paddingLeft: 2,
 						paddingRight: 1,
 						backgroundColor: theme.colorTextBase,
 					}}
 					selectedKeys={[path]}
-					defaultSelectedKeys={["/home"]}
+					defaultSelectedKeys={['/home']}
 					mode="inline"
 					theme="dark"
 					inlineCollapsed={!isExpanded}

@@ -1,15 +1,19 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { ProtectedRoute } from "layouts/ProtectedLayout/ProtectedRoute";
-import FolderDetailScreen from "modules/folder/screens/FolderDetailScreen/FolderDetailScreen";
+import { createLazyFileRoute } from '@tanstack/react-router';
+import AppLayout from 'layouts/AppLayout/AppLayout';
+import { ProtectedRoute } from 'layouts/ProtectedLayout/ProtectedRoute';
+import FolderDetailScreen from 'modules/folder/screens/FolderDetailScreen/FolderDetailScreen';
 
-export const Route = createLazyFileRoute("/folders/$folderId")({
+export const Route = createLazyFileRoute('/folders/$folderId')({
 	component: RouteComponent,
 });
 
 function RouteComponent() {
+	const param = Route.useParams();
 	return (
 		<ProtectedRoute>
-			<FolderDetailScreen folderId="123" />
+			<AppLayout>
+				<FolderDetailScreen folderId={param.folderId} />
+			</AppLayout>
 		</ProtectedRoute>
 	);
 }

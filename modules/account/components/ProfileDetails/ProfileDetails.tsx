@@ -52,7 +52,7 @@ const ProfileDetails = () => {
 			onCheckValidFields();
 			setIsValueChanged(checkIsChanged());
 		},
-		{ wait: 500 },
+		{ wait: 200 },
 	);
 
 	const onCheckValidFields = async () => {

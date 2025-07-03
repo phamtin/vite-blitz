@@ -1,6 +1,6 @@
-import useAppState from "store/index";
-import type { GetMyFoldersResponse } from "./type";
-import FolderApi from "modules/folder/api/folder.api";
+import FolderApi from 'modules/folder/api/folder.api';
+import useAppState from 'store/index';
+import type { GetMyFoldersResponse } from './type';
 
 const useQueryAppData = (enabled?: boolean) => {
 	const {
@@ -14,7 +14,7 @@ const useQueryAppData = (enabled?: boolean) => {
 	const setActiveFolder = useAppState((state) => state.setActiveFolder);
 
 	if (isSuccess && !data.length) {
-		throw new Error("Active Folder not found");
+		throw new Error('Active Folder not found');
 	}
 
 	if (isSuccess && data.length > 0) {

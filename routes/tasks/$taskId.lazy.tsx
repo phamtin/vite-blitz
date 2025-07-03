@@ -9,7 +9,7 @@ export const Route = createLazyFileRoute("/tasks/$taskId")({
 function RouteComponent() {
 	return (
 		<ProtectedRoute>
-			<TaskDetailScreen taskId="123" />
+			<TaskDetailScreen taskId="682c37ba3d953819460e4435" />
 		</ProtectedRoute>
 	);
 }

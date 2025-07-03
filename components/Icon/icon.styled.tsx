@@ -29,7 +29,7 @@ const useStyles = createStyles((_, props: IconProps) => {
       borderRadius: props.size === "small" ? "40px" : "80px",
       cursor: props.clickable ? "pointer" : "default",
       "&:hover": {
-        backgroundColor: props.clickable ? `${props.color}50` : "transparent",
+        backgroundColor: props.clickable ? `${props.color}50` : `${props.color}25`
       },
     },
   };

@@ -1,19 +1,19 @@
-import api from "../../../api/api";
 import {
+	type UseQueryOptions,
 	useMutation,
 	useQuery,
 	useQueryClient,
-	type UseQueryOptions,
-} from "@tanstack/react-query";
+} from '@tanstack/react-query';
+import queryString from 'query-string';
+import type { Ok } from 'types/response.type';
+import api from '../../../api/api';
 import type {
 	CreateTaskRequest,
+	TaskModel,
 	TaskPriority,
 	TaskStatus,
 	UpdateTaskRequest,
-} from "../types/task.types";
-import queryString from "query-string";
-import type { TaskModel } from "../types/task.types";
-import type { Ok } from "types/response.type";
+} from '../types/task.types';
 
 type UseGetTasksProps = {
 	folderIds: string[];
@@ -25,11 +25,11 @@ type UseGetTasksProps = {
 	priorities?: TaskPriority[];
 	fields?: (keyof TaskModel)[];
 	isMine?: boolean;
-} & Omit<UseQueryOptions<Ok<TaskModel[]>>, "queryKey" | "queryFn">;
+} & Omit<UseQueryOptions<Ok<TaskModel[]>>, 'queryKey' | 'queryFn'>;
 
 const useGetTasks = ({
 	folderIds,
-	query = "",
+	query = '',
 	startDate,
 	endDate,
 	tags,
@@ -45,15 +45,14 @@ const useGetTasks = ({
 		endDate,
 		isMine,
 		fields,
-		tags: tags?.length === 1 ? tags.concat(tags[0]) : tags,
-		status: status?.length === 1 ? status.concat(status[0]) : status,
-		folderIds: folderIds.length === 1 ? folderIds.concat(folderIds[0]) : folderIds,
-		priorities:
-			priorities?.length === 1 ? priorities.concat(priorities[0]) : priorities,
+		tags,
+		status,
+		folderIds,
+		priorities,
 	};
 	return useQuery({
 		...useQueryOptions,
-		queryKey: ["useGetTasks", queryKeys],
+		queryKey: ['useGetTasks', queryKeys],
 
 		queryFn: ({ signal }) => {
 			const paramsObject: Record<string, string | string[] | unknown> = {
@@ -90,11 +89,11 @@ const useCreateTask = (props: CreateTaskProps) => {
 
 	const mutationCreateTask = useMutation({
 		mutationFn: (newTask: CreateTaskRequest) => {
-			return api.post("tasks/create", { json: newTask }).json();
+			return api.post('tasks/create', { json: newTask }).json();
 		},
 		onSuccess: () => {
 			props.onClose?.(true);
-			queryClient.invalidateQueries({ queryKey: ["useGetMyFolders"] });
+			queryClient.invalidateQueries({ queryKey: ['useGetMyFolders'] });
 		},
 	});
 
@@ -114,7 +113,7 @@ const useUpdateTask = (props: UpdateTaskProps) => {
 		},
 		onSuccess: () => {
 			props.onClose?.(true);
-			queryClient.invalidateQueries({ queryKey: ["useGetMyFolders"] });
+			queryClient.invalidateQueries({ queryKey: ['useGetMyFolders'] });
 		},
 	});
 

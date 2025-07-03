@@ -1,8 +1,20 @@
-import { createStyles } from "antd-style";
+import { createStyles } from 'antd-style';
 
-const useStyles = createStyles((token) => ({
+const useStyles = createStyles(({ token }) => ({
 	wrapper: {
-		width: "100%",
+		width: '100%',
+		display: 'flex',
+		flexDirection: 'column',
+	},
+
+	folderTitle: {
+		marginTop: token.margin,
+		marginBottom: token.marginXS,
+	},
+	tabs: {
+		'.ant-tabs': {
+			width: '100%',
+		},
 	},
 }));
 

@@ -88,9 +88,11 @@ const NavBarRight = () => {
   return (
     <div className="NavBarRight">
       <Space align="center" size={14}>
-        <NotificationModal iconActive={iconActive}
+        <NotificationModal
+          iconActive={iconActive}
           setIconActive={setIconActive}
-          onHandleClickIcon={onHandleClickIcon} />
+          onHandleClickIcon={onHandleClickIcon}
+        />
         <Button
           shape="circle"
           size="large"

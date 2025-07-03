@@ -1,6 +1,6 @@
-import type { DefaultOptionType } from "antd/es/select";
-import type { AttributePattern } from "../../../types/app.type";
-import type { AccountModel } from "../../account/types/account.types";
+import type { DefaultOptionType } from 'antd/es/select';
+import type { AttributePattern } from '../../../types/app.type';
+import type { AccountModel } from '../../account/types/account.types';
 
 export type TaskTiming = {
 	startDate?: Date | null;
@@ -9,23 +9,23 @@ export type TaskTiming = {
 };
 
 export enum TaskPriority {
-	Critical = "Critical",
-	High = "High",
-	Medium = "Medium",
-	Low = "Low",
+	Critical = 'Critical',
+	High = 'High',
+	Medium = 'Medium',
+	Low = 'Low',
 }
 
 export enum TaskStatus {
-	NotStartYet = "NotStartYet",
-	InProgress = "InProgress",
-	Pending = "Pending",
-	Done = "Done",
-	Archived = "Archived",
+	NotStartYet = 'NotStartYet',
+	InProgress = 'InProgress',
+	Pending = 'Pending',
+	Done = 'Done',
+	Archived = 'Archived',
 }
 
 export enum PodomoroType {
-	"25-5" = "25-5",
-	"50-10" = "50-10",
+	'25-5' = '25-5',
+	'50-10' = '50-10',
 }
 
 export type Podomoro = {
@@ -48,7 +48,7 @@ export type TaskModel = {
 	folderId: string;
 	description?: string;
 	priority?: TaskPriority;
-	assigneeInfo?: Omit<AccountModel, "accountSettings">[];
+	assigneeInfo?: Omit<AccountModel, 'accountSettings'>[];
 	additionalInfo?: AttributePattern[];
 	timing: TaskTiming;
 	subTasks?: SubTask[];
@@ -62,11 +62,19 @@ export type TaskModel = {
 };
 
 export type ExtendTaskModel = {
-	created?: Omit<AccountModel, "accountSettings">;
+	created?: Omit<AccountModel, 'accountSettings'>;
 	availableTags?: { _id: string; name: string; color: string }[];
 };
 
-export type SubTask = Pick<TaskModel, "_id" | "title"> & { status?: TaskStatus };
+export type SubTask = Pick<TaskModel, '_id' | 'title'> & { status?: TaskStatus };
+
+export type InlineTaskModel = Pick<
+	TaskModel,
+	'_id' | 'folderId' | 'title' | 'status' | 'timing' | 'priority' | 'createdAt'
+> & {
+	assigneeInfo?: { _id: string }[];
+};
+
 /**
  *  -----------------------------
  *	|
