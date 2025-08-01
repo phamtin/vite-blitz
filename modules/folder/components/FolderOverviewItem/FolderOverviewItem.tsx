@@ -1,4 +1,5 @@
 import { EllipsisVerticalIcon, PencilIcon, TagIcon, TrashIcon } from "@heroicons/react/24/outline"
+import { useNavigate } from "@tanstack/react-router"
 import { Avatar, Button, Card, Dropdown, Flex, MenuProps, message, Tooltip, Typography } from "antd"
 import { GetMyFoldersResponse } from 'hooks/queryAppData/type'
 import { FolderIcon } from "icons/FolderIcon"
@@ -16,6 +17,7 @@ interface FolderOverviewItemProps {
 const FolderOverviewItem = (props: FolderOverviewItemProps) => {
   const {styles} = useStyles()
   const { folder } = props
+  const navigate = useNavigate()
   const pinnedFolderIds = useAppState((state) => state.auth.currentLoggedInUser?.accountSettings.pinnedFolderIds)
   const [isOpenModalDelete, setIsOpenModalDelete] = useState(false)
   const {mutationUpdateProfileInfo} = ProfileApi.useUpdateProfile()
@@ -113,49 +115,55 @@ const FolderOverviewItem = (props: FolderOverviewItemProps) => {
     key: 'delete',
   },
   ];
+
+  const goToFolderDetails = () => {
+    navigate({to: "/folders/$folderId", params: {folderId: folder.folder._id} })
+  }
   
   return (
-    <div className={styles.card}>
-    <Card>
-        <FolderIcon width="100" height="100" color={folder.folder.folderInfo.color} />
-        <Dropdown menu={{
-          items,
-          onClick: ({key}) => {
-            switch (key) {
-              case "pin":
-                handlePinnedFolder()
-                return
-              case "delete":
-                setIsOpenModalDelete(true)
-              default: 
-                return  
+    <div>
+      <div className={styles.card} onClick={goToFolderDetails}>
+      <Card>
+          <FolderIcon width="100" height="100" color={folder.folder.folderInfo.color} />
+          <Dropdown menu={{
+            items,
+            onClick: ({ key, domEvent }) => {
+              domEvent.stopPropagation()
+              switch (key) {
+                case "pin":
+                  handlePinnedFolder()
+                  return
+                case "delete":
+                  setIsOpenModalDelete(true)
+                default:
+                  return
+              }
             }
-          }
-        }}
-          trigger={['click']} placement="bottomRight">
-          <Button shape="default"
-							type="text"
-            className={styles.buttonDropdown}
-            icon={
-            
-              <EllipsisVerticalIcon width={20} color={Neutral[500]} />
-          }
-          />
-  </Dropdown>
-      </Card>
-      <Flex justify="space-between" align="center" className={styles.folderInfo}>
-
-      <Typography.Title level={5}>{folder.folder.folderInfo.title}</Typography.Title>
-      <Avatar.Group
-                max={{
-                  count: 3,
-                }}
-                >
-                {renderMemberAvatars(folder.folder)}
-              </Avatar.Group>
-      </Flex>
+          }}
+            trigger={['click']} placement="bottomRight">
+            <Button shape="default"
+                    type="text"
+              className={styles.buttonDropdown}
+              icon={
+                <EllipsisVerticalIcon width={20} color={Neutral[500]} />
+              }
+              onClick={(e) => e.stopPropagation()}
+            />
+        </Dropdown>
+        </Card>
+        <Flex justify="space-between" align="center" className={styles.folderInfo}>
+        <Typography.Title level={5}>{folder.folder.folderInfo.title}</Typography.Title>
+        <Avatar.Group
+                  max={{
+                    count: 3,
+                  }}
+                  >
+                  {renderMemberAvatars(folder.folder)}
+                </Avatar.Group>
+        </Flex>
       
-      <DeleteFolderModal id={folder.folder._id} isModalOpen={isOpenModalDelete} handleCancel={() => setIsOpenModalDelete(false) } />
+      </div>
+        <DeleteFolderModal id={folder.folder._id} isModalOpen={isOpenModalDelete} handleCancel={() => setIsOpenModalDelete(false)} />
     </div>
   )
 }

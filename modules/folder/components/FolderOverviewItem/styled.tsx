@@ -2,7 +2,10 @@ import { createStyles } from "antd-style";
 
 const useStyles = createStyles(({ token }) => ({
   card: {
-    width: 250, textAlign: "center", position: "relative"
+    width: 250,
+    textAlign: "center",
+    position: "relative",
+    cursor: "pointer"
   },
   iconDropdown: {
     width: "16px",
