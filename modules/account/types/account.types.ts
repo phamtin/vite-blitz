@@ -19,9 +19,12 @@ export type ProfileInfo = {
 	isPrivateAccount: boolean;
 	birthday?: Date;
 };
+export type PomodoroSettings = { numOfSession: number; durationWork: number; durationBreak: number };
 
 export type AccountSettings = {
-	theme: Theme;
+  theme: Theme;
+  pinnedFolderIds: string[];
+	pomodoroSettings: PomodoroSettings;
 };
 
 /**
@@ -51,8 +54,10 @@ export type PublicAccountModel = Omit<AccountModel, "accountSettings">;
 export type Participant = PublicAccountModel & { isOwner?: boolean };
 
 export type UpdateProfileRequest = {
-  profileInfo:  Pick<ProfileInfo, 'firstname' | 'lastname' | 'phoneNumber' | 'username'>
+  profileInfo?: Pick<ProfileInfo, 'firstname' | 'lastname' | 'phoneNumber' | 'username'>
+  accountSettings?: Pick<AccountSettings, 'pinnedFolderIds'>
 }
+
 export type UpdateProfileInitialValues = Partial<
   Pick<ProfileInfo, 'firstname' | 'lastname' | 'phoneNumber' | 'username'>
 >;

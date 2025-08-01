@@ -1,4 +1,4 @@
-import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { type UseQueryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from 'api/api';
 import type { Ok } from 'types/response.type';
 
@@ -30,6 +30,27 @@ const useGetFolderById = <TData, TError = Error>(
 	});
 };
 
-const FolderApi = { useGetMyFolders, useGetFolderById };
+type DeleteFolderProps = {
+  folderId: string
+  onClose: () => void
+}
+
+const useDeleteFolder = (props: DeleteFolderProps) => {
+  const queryClient = useQueryClient()
+
+  const mutationDeleteProject = useMutation({
+    mutationFn: () => {
+      return api.delete(`folders/${props.folderId}`).json();
+    },
+    onSuccess: () => {
+      props.onClose()
+      queryClient.invalidateQueries({queryKey : ["useGetMyFolders"]})
+    }
+  })
+
+  return { mutationDeleteProject } 
+}
+
+const FolderApi = { useGetMyFolders, useGetFolderById, useDeleteFolder };
 
 export default FolderApi;
