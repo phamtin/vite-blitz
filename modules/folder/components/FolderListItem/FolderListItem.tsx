@@ -14,7 +14,7 @@ interface FolderOverviewItemProps {
   folder: GetMyFoldersResponse
 }
 
-const FolderOverviewItem = (props: FolderOverviewItemProps) => {
+const FolderListItem = (props: FolderOverviewItemProps) => {
   const {styles} = useStyles()
   const { folder } = props
   const navigate = useNavigate()
@@ -168,6 +168,6 @@ const FolderOverviewItem = (props: FolderOverviewItemProps) => {
   )
 }
 
-export default FolderOverviewItem
+export default FolderListItem
 
 

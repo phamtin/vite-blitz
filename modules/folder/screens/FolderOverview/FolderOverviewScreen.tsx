@@ -3,7 +3,7 @@ import { Button, Flex, Space, Typography } from "antd";
 import { FILTER_FOLDER_OPTIONS } from "constants/constants";
 import { GetMyFoldersResponse } from "hooks/queryAppData/type";
 import FolderApi from "modules/folder/api/folder.api";
-import FolderOverviewItem from "modules/folder/components/FolderOverviewItem/FolderOverviewItem";
+import FolderListItem from "modules/folder/components/FolderListItem/FolderListItem";
 import { useState } from "react";
 import useAppState from "store";
 import useStyles from "./styled";
@@ -43,7 +43,7 @@ const FolderOverviewScreen = () => {
       {
         filteredFolders.length ? filteredFolders.map(item => {
           return (
-            <FolderOverviewItem folder={item} key={item.folder._id} />
+            <FolderListItem folder={item} key={item.folder._id} />
           )
         }) : <Flex justify="center" vertical align="center" className={styles.noFoldersWrapper}>
             <DocumentMagnifyingGlassIcon width={50}/>

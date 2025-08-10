@@ -1,13 +1,13 @@
-import { type CSSProperties, useState } from "react";
-import Select from "antd/es/select";
-import {
-	TaskPriority,
-	type TaskMetadataForDropdown,
-} from "modules/tasks/types/task.types";
-import TaskHook from "modules/tasks/hook/task.hook";
 import { Flex, Typography } from "antd";
+import Select from "antd/es/select";
 import { FlagIcon } from "icons/FlagIcon";
 import { PRIORITY_COLOR_MAP } from "modules/tasks/constants/task.constant";
+import TaskHook from "modules/tasks/hook/task.hook";
+import {
+  TaskPriority,
+  type TaskMetadataForDropdown,
+} from "modules/tasks/types/task.types";
+import { useState, type CSSProperties } from "react";
 
 const { Text } = Typography;
 
@@ -27,7 +27,7 @@ const TaskPrioritySelector = (props: TaskPrioritySelectorProps) => {
 		setVal(value);
 		props.onChange(value);
 	};
-
+//
 	const options = taskMetadata.priorities.map((item) => ({
 		value: item.value,
 		label: (
