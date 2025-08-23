@@ -203,15 +203,18 @@ const AddMemberModal = ({ isModalOpen, handleCancel, participantInfo, folderId }
           </> : <>
               {
                 memberStatuses.map(m => {
-                  return <Flex gap={15} align='center' justify='space-between' className="member">
+                  const { email, avatar } = m.profileInfo
+                  const status = findMemberStatus(email)
+
+                  return <Flex key={email} gap={15} align='center' justify='space-between' className="member">
                       <Space size={'middle'}>
-                        <Avatar src={m.profileInfo.avatar} />
+                        <Avatar src={avatar} />
                         <Flex vertical gap={3} >
-                          <Text strong>{m.profileInfo.email}</Text>
-                          {renderMemberStatus(findMemberStatus(m.profileInfo.email))}
+                          <Text strong>{email}</Text>
+                          {renderMemberStatus(status)}
                         </Flex>
                     </Space>
-                    {renderMemberAction(findMemberStatus(m.profileInfo.email), m.profileInfo.email)}
+                    {renderMemberAction(status, email)}
                     </Flex>
                 })
               }
