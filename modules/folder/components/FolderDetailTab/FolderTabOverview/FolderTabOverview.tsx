@@ -41,13 +41,14 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
   const { folderInfo } = folder;
 	const taskMetadata = TaskHook.useGetTaskMetadata();
 
-  const totalTime = useMemo(() => {
-    return tasks?.reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
+  const countTime = useMemo(() => {
+    return (status?: TaskStatus) => {
+      if (status) {
+        return tasks?.filter(t => t.status === status).reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0) || 0
+      }
+      return tasks?.reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0) || 0
+    }
   }, [tasks])
-
-  const countTimeByStatus = (status: TaskStatus) => {
-    return tasks?.filter(t => t.status === status).reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
-  }
 
 	return (
 		<div className={styles.wrapper}>
@@ -93,7 +94,7 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
 						<DescriptionText text={"Time statistics"} />
           </Descriptions.Item>
           
-          <Statistic title="Total times" value={`${totalTime}h`} className='totalTime' />
+          <Statistic title="Total times" value={`${countTime()}h`} className='totalTime' />
 
           {
             taskMetadata.status.map(s => {
@@ -103,12 +104,12 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
                 >
                   <StatusDot status={s as TaskStatus} />
                   <Text style={{ fontWeight: 500 }}>{s as TaskStatus}</Text>
-                  <Text>{ countTimeByStatus(s as TaskStatus)}h</Text>
+                  <Text>{ countTime(s as TaskStatus)}h</Text>
                 </Flex>
               )
             })
           }
-          <Button style={{ width: "100%" }}>
+          <Button block>
             <ArrowUpTrayIcon width={20}/>
             
             Export statistics</Button>

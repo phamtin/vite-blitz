@@ -11,9 +11,8 @@ const DeleteFolderModal = ({ id, isModalOpen, handleCancel }: DeleteFolderModalP
   const {mutationDeleteProject} = FolderApi.useDeleteFolder({folderId: id, onClose: handleCancel})
   const handleDelete = () => {
     mutationDeleteProject.mutate(undefined ,{
-      onSuccess: () => {
-        message.success('Folder deleted successfully')
-      }
+      onSuccess: () => message.success('Folder deleted successfully'),
+      onError: () => message.error("Failed to delete folder"),
     })
   }
 
