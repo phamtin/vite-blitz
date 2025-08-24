@@ -29,15 +29,13 @@ const TaskStats = (props: TaskStatsProps) => {
     const countTasksByStatus = (status: TaskStatus) => {
       return tasks?.filter(s => s.status === status).length || 0
   }
+  
+  const percentTasksByStatus = (status: TaskStatus) => {
+    if (!tasks || !tasks.length) return 0;
+    return countTasksByStatus(status) / tasks.length
+  }
 
-  const percentTasksStatusDone = () => {
-    if (tasks) {
-      return countTasksByStatus(TaskStatus.Done) / tasks?.length * 100
-    }
-    
-    return 0
-    }
-  const percentTaskDone = percentTasksStatusDone()
+  const percentTaskDone = percentTasksByStatus(TaskStatus.Done) * 100
 
   return (
     <WhiteBox>

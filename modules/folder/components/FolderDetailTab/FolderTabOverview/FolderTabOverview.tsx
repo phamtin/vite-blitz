@@ -15,7 +15,6 @@ import dayjs from 'dayjs';
 import type { FolderModel } from 'modules/folder/types/folder.types';
 import TaskHook from 'modules/tasks/hook/task.hook';
 import { TaskModel, TaskStatus } from 'modules/tasks/types/task.types';
-import { useMemo } from 'react';
 import { Neutral } from 'styles/colors';
 import OwnerAndAccessBox from './OwnerAndAccessBox/OwnerAndAccessBox';
 import useStyles from './styled';
@@ -41,14 +40,14 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
   const { folderInfo } = folder;
 	const taskMetadata = TaskHook.useGetTaskMetadata();
 
-  const countTime = useMemo(() => {
-    return (status?: TaskStatus) => {
+  const countTime = (status?: TaskStatus) => {
+    if (!tasks) return 0
+
       if (status) {
-        return tasks?.filter(t => t.status === status).reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0) || 0
+        return tasks.filter(t => t.status === status).reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
       }
-      return tasks?.reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0) || 0
-    }
-  }, [tasks])
+      return tasks.reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
+  }
 
 	return (
 		<div className={styles.wrapper}>
