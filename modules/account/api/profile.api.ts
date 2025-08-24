@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, UseQueryOptions } from "@tanstack/react-query";
 import api from "api/api";
 import useAppState from "store";
 import type { Ok } from "types/response.type";
@@ -21,6 +21,20 @@ const useUpdateProfile = (onSuccessCallback?: () => void) => {
 	return { mutationUpdateProfileInfo };
 };
 
-const ProfileApi = { useUpdateProfile };
+const useGetAccountByEmail = <TData, TError = Error>(
+  email: string,
+  options?: Omit<UseQueryOptions<TData, TError>, 'queryKey'>,) => {
+  return useQuery({
+    queryKey: ["useGetAccountByEmail", email],
+    queryFn: async () => {
+      const res = await api.get(`accounts/search?email=${email}`)
+      return ((await res.json()) as Ok<TData>).data;
+    },
+    enabled: !!email,
+    ...options,
+  })
+}
+
+const ProfileApi = { useUpdateProfile, useGetAccountByEmail };
 
 export default ProfileApi;

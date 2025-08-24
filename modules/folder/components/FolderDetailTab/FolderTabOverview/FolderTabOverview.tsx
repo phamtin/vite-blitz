@@ -62,7 +62,7 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
           </Paragraph>
         </WhiteBox></Col>
 
-        <Col xs={7}>
+        <Col xs={7} className={styles.ownerAndAccess}>
           <OwnerAndAccessBox folder={folder} />
         </Col>
 
@@ -80,7 +80,14 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
                 {dayjs.utc(`${folder.createdAt}`).local().format('ddd, DD MMM YYYY')}</Text>
               </Text>
               </Flex>
-            </Card>
+          </Card>
+          
+          <Descriptions column={1 } style={{paddingTop: '5px'}}>
+                      <Descriptions.Item label="Status">
+                          {folderInfo.status }
+                      </Descriptions.Item>
+                      
+                    </Descriptions>
         </WhiteBox>
         </Col>
         

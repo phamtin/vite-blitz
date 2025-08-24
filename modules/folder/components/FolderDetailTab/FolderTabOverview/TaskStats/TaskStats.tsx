@@ -10,8 +10,8 @@ import { DescriptionText } from '../FolderTabOverview'
 
 const conicColors: ProgressProps['strokeColor'] = {
   '0%': Orange[200],
-  '50%': Orange[300],
-  '100%': Orange[500],
+  '50%': Orange[400],
+  '100%': Orange[600],
 };
 
 const { Text, Title } = Typography;
@@ -22,7 +22,6 @@ interface TaskStatsProps {
 const TaskStats = (props: TaskStatsProps) => {
   const { tasks } = props
 	const taskMetadata = TaskHook.useGetTaskMetadata();
-  
     const countTasksByPriority = (priority: TaskPriority) => {
       return tasks?.filter(s => s.priority === priority).length || 0
   }

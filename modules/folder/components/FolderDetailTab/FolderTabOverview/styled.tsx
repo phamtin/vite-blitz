@@ -38,11 +38,13 @@ const useStyles = createStyles(({ token }) => ({
     backgroundColor: 'white',
   },
   
-  owner: {
-    backgroundColor: Neutral[100],
-    paddingInline: token.paddingSM,
-    borderRadius: token.borderRadiusSM,
-    paddingBlock: token.paddingXS,
+  ownerAndAccess: {
+    ".owner": {
+      backgroundColor: Neutral[100],
+      paddingInline: token.paddingSM,
+      borderRadius: token.borderRadiusSM,
+      paddingBlock: token.paddingXS,
+    },
 
     '.username': {
       fontSize: "14px"
@@ -50,6 +52,13 @@ const useStyles = createStyles(({ token }) => ({
 
     '.email': {
       fontSize: "12px"
+    },
+
+    '.addMemberBtn': {
+      backgroundColor: Orange[500],
+                color: '#333',
+                cursor: 'pointer',
+                fontWeight: 'bold',
     }
   },
 
@@ -115,6 +124,41 @@ const useStyles = createStyles(({ token }) => ({
     }
   },
 
+  addMemberModal: {
+    ".ant-input": {
+      marginBlock: "20px"
+    },
+
+    ".ant-avatar.ant-avatar-circle": {
+      width: "40px",
+      height: "40px"
+    },
+
+    ".ant-input-group-addon": {
+      background: "unset"
+    },
+
+    ".member": {
+      marginBottom: "15px"
+    },
+
+    ".tagAdmin": {
+      width: "fit-content"
+    },
+
+    ".tagMember": {
+      color: Orange[500],
+      fontSize: "12px"
+    },
+
+    ".withdrawBtn": {
+      maxWidth: "80px",
+    whiteSpace: "normal",
+                textAlign: "center",
+                padding: "5px",
+    height: "fit-content"
+    }
+  }
 
 }));
 
