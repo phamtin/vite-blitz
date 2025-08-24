@@ -1,17 +1,17 @@
 import { ChevronLeftIcon } from '@heroicons/react/16/solid';
 import {
-	CalendarIcon,
-	CircleStackIcon,
-	DocumentIcon,
-	FolderIcon,
+  CalendarIcon,
+  CircleStackIcon,
+  DocumentIcon,
+  FolderIcon,
 } from '@heroicons/react/24/outline';
 import { useNavigate } from '@tanstack/react-router';
 import { Button, Flex, Tabs, Tag, Typography } from 'antd';
 import FolderApi from 'modules/folder/api/folder.api';
 import FolderDetailTab from 'modules/folder/components/FolderDetailTab/FolderDetailTab';
 import type {
-	ExtendFolderModel,
-	FolderModel,
+  ExtendFolderModel,
+  FolderModel,
 } from 'modules/folder/types/folder.types';
 import TaskApi from 'modules/tasks/api/task.api';
 import { TASK_FIELDS } from 'modules/tasks/constants/task.constant';
@@ -41,7 +41,7 @@ const FolderDetailScreen = (props: FolderDetailScreenProps) => {
 		fields: TASK_FIELDS.Overview,
 	});
 
-	const tasks = useGetTasks.data || ([] as TaskModel[]);
+  const tasks = useGetTasks.data || ([] as TaskModel[]);
 
 	const goBackAllFolders = () => {
 		return navigate({ to: '/folders', replace: true });
@@ -67,10 +67,10 @@ const FolderDetailScreen = (props: FolderDetailScreenProps) => {
 			<Flex className={styles.tabs}>
 				<Tabs
 					items={[
-						{
-							key: '1',
-							label: 'Overview',
-							children: <FolderDetailTab tabkey="overview" folder={folder} />,
+            {
+              key: '1',
+              label: 'Overview',
+              children: <FolderDetailTab tabkey="overview" folder={folder} tasks={tasks} />,
 							icon: <CircleStackIcon width={16} style={{ marginBottom: -2 }} />,
 						},
 						{

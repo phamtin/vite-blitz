@@ -1,5 +1,5 @@
-import { Flex } from 'antd';
 import type { FolderModel } from 'modules/folder/types/folder.types';
+import { TaskModel } from 'modules/tasks/types/task.types';
 import FolderTabCalendar from './FolderTabCalendar/FolderTabCalendar';
 import FolderTabFile from './FolderTabFile/FolderTabFile';
 import FolderTabOverview from './FolderTabOverview/FolderTabOverview';
@@ -8,14 +8,15 @@ import useStyles from './styled';
 
 interface FolderDetailTabProps {
 	tabkey: 'overview' | 'task' | 'calendar' | 'file';
-	folder: FolderModel;
+  folder: FolderModel;
+  tasks?: TaskModel[]
 }
 
 const FolderDetailTab = (props: FolderDetailTabProps) => {
-	const { tabkey, folder } = props;
+  const { tabkey, folder, tasks } = props;
 
-	const { styles } = useStyles();
-	let tab = <FolderTabOverview folder={folder} />;
+  const { styles } = useStyles();
+  let tab = <FolderTabOverview folder={folder} tasks={tasks} />;
 
 	switch (tabkey) {
 		case 'task':

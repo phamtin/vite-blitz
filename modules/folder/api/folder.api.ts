@@ -1,4 +1,4 @@
-import { type UseQueryOptions, useQuery } from '@tanstack/react-query';
+import { type UseQueryOptions, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from 'api/api';
 import type { Ok } from 'types/response.type';
 
@@ -30,6 +30,98 @@ const useGetFolderById = <TData, TError = Error>(
 	});
 };
 
-const FolderApi = { useGetMyFolders, useGetFolderById };
+type DeleteFolderProps = {
+  folderId: string
+  onClose: () => void
+}
+
+const useDeleteFolder = (props: DeleteFolderProps) => {
+  const queryClient = useQueryClient()
+
+  const mutationDeleteProject = useMutation({
+    mutationFn: () => {
+      return api.delete(`folders/${props.folderId}`).json();
+    },
+    onSuccess: () => {
+      props.onClose()
+      queryClient.invalidateQueries({queryKey : ["useGetMyFolders"]})
+    }
+  })
+
+  return { mutationDeleteProject } 
+}
+
+type removeMemberProjectRequest = {
+  folderId: string,
+  memberEmail: string
+}
+
+type UpdateMemberFolderProps = {
+  folderId: string
+}
+
+const useRemoveMemberFolder = (props: UpdateMemberFolderProps) => {
+  const queryClient = useQueryClient()
+  
+  const mutationRemoveMemberFolder = useMutation({
+    mutationFn: (request: removeMemberProjectRequest) => {
+      return api.post(`folders/invite/remove`, { json: request }).json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["useGetFolderById", props.folderId] })
+    }
+  })
+
+  return { mutationRemoveMemberFolder }
+}
+
+type addMemberProjectRequest = {
+  folderId: string,
+  emails: string[]
+}
+
+const useAddMemberFolder = (props: UpdateMemberFolderProps) => {
+  const queryClient = useQueryClient()
+  
+  const mutationAddMemberFolder = useMutation({
+    mutationFn: (request: addMemberProjectRequest) => {
+      return api.post(`folders/invite`, { json: request }).json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["useGetFolderById", props.folderId] })
+    }
+  })
+
+  return { mutationAddMemberFolder }
+}
+
+
+type WithdrawInvitationMemberRequest = {
+  folderId: string,
+  inviteeEmail: string
+}
+
+const useWithdrawInvitationMember = (props: UpdateMemberFolderProps) => {
+  const queryClient = useQueryClient()
+  const mutationWithdrawInvitationMember = useMutation({
+    mutationFn: (request: WithdrawInvitationMemberRequest) => { 
+      return api.post(`folders/invite/withdraw`, {json: request}).json()
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["useGetFolderById", props.folderId] })
+    }
+  })
+
+  return { mutationWithdrawInvitationMember }
+}
+
+const FolderApi = {
+  useGetMyFolders,
+  useGetFolderById,
+  useDeleteFolder,
+  useRemoveMemberFolder,
+  useAddMemberFolder,
+  useWithdrawInvitationMember
+};
 
 export default FolderApi;
