@@ -45,6 +45,9 @@ const useDeleteFolder = (props: DeleteFolderProps) => {
     onSuccess: () => {
       props.onClose()
       queryClient.invalidateQueries({queryKey : ["useGetMyFolders"]})
+    },
+    onError: (error: Error) => {
+      console.error("Delete folder failed:", error)
     }
   })
 

@@ -23,19 +23,18 @@ const TaskStats = (props: TaskStatsProps) => {
   const { tasks } = props
 	const taskMetadata = TaskHook.useGetTaskMetadata();
     const countTasksByPriority = (priority: TaskPriority) => {
-      return tasks?.map(t => t.priority).filter(s => s === priority).length
+      return tasks?.filter(s => s.priority === priority).length || 0
   }
     const countTasksByStatus = (status: TaskStatus) => {
-      return tasks?.map(t => t.status).filter(s => s === status).length || 0
+      return tasks?.filter(s => s.status === status).length || 0
+  }
+  
+  const percentTasksByStatus = (status: TaskStatus) => {
+    if (!tasks || !tasks.length) return 0;
+    return countTasksByStatus(status) / tasks.length
   }
 
-  const percentTasksStatusDone = () => {
-    if (tasks) {
-      return countTasksByStatus(TaskStatus.Done) / tasks?.length
-    }
-    
-    return 0
-    }
+  const percentTaskDone = percentTasksByStatus(TaskStatus.Done) * 100
 
   return (
     <WhiteBox>
@@ -50,15 +49,15 @@ const TaskStats = (props: TaskStatsProps) => {
                 <Tag
       className='tagProgress'
                 >
-                  {percentTasksStatusDone() * 100 + "%"}
+                  {percentTaskDone + "%"}
               </Tag>
     
               </Flex>
               <Progress
       percent={
         tasks && tasks.length > 0
-          ? percentTasksStatusDone() * 100
-                      : 0
+          ? percentTaskDone
+                    : 0
       }
       showInfo={false}
       strokeColor={conicColors}

@@ -15,7 +15,6 @@ import dayjs from 'dayjs';
 import type { FolderModel } from 'modules/folder/types/folder.types';
 import TaskHook from 'modules/tasks/hook/task.hook';
 import { TaskModel, TaskStatus } from 'modules/tasks/types/task.types';
-import { useMemo } from 'react';
 import { Neutral } from 'styles/colors';
 import OwnerAndAccessBox from './OwnerAndAccessBox/OwnerAndAccessBox';
 import useStyles from './styled';
@@ -41,12 +40,13 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
   const { folderInfo } = folder;
 	const taskMetadata = TaskHook.useGetTaskMetadata();
 
-  const totalTime = useMemo(() => {
-    return tasks?.reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
-  }, [tasks])
+  const countTime = (status?: TaskStatus) => {
+    if (!tasks) return 0
 
-  const countTimeByStatus = (status: TaskStatus) => {
-    return tasks?.filter(t => t.status === status).reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
+      if (status) {
+        return tasks.filter(t => t.status === status).reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
+      }
+      return tasks.reduce((acc, cur) => acc + (cur.timing.estimation || 0), 0)
   }
 
 	return (
@@ -100,7 +100,7 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
 						<DescriptionText text={"Time statistics"} />
           </Descriptions.Item>
           
-          <Statistic title="Total times" value={`${totalTime}h`} className='totalTime' />
+          <Statistic title="Total times" value={`${countTime()}h`} className='totalTime' />
 
           {
             taskMetadata.status.map(s => {
@@ -110,12 +110,12 @@ const FolderTabOverview = (props: FolderTabOverviewProps) => {
                 >
                   <StatusDot status={s as TaskStatus} />
                   <Text style={{ fontWeight: 500 }}>{s as TaskStatus}</Text>
-                  <Text>{ countTimeByStatus(s as TaskStatus)}h</Text>
+                  <Text>{ countTime(s as TaskStatus)}h</Text>
                 </Flex>
               )
             })
           }
-          <Button style={{ width: "100%" }}>
+          <Button block>
             <ArrowUpTrayIcon width={20}/>
             
             Export statistics</Button>
