@@ -20,7 +20,7 @@ const FolderDetailTab = (props: FolderDetailTabProps) => {
 
 	switch (tabkey) {
 		case 'task':
-			tab = <FolderTabTask />;
+			tab = <FolderTabTask folder={folder} />;
 			break;
 		case 'calendar':
 			tab = <FolderTabCalendar />;
